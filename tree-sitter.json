@@ -1,0 +1,21 @@
+{
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "Tree-sitter grammar for the Fir programming language",
+    "authors": [],
+    "links": {
+      "repository": ""
+    }
+  },
+  "grammars": [
+    {
+      "name": "fir",
+      "path": ".",
+      "scope": "source.fir",
+      "file-types": ["fir"],
+      "highlights": "queries/highlights.scm"
+    }
+  ],
+  "parser-directories": []
+}

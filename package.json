@@ -1,0 +1,17 @@
+{
+  "name": "tree-sitter-fir",
+  "version": "0.1.0",
+  "description": "Tree-sitter grammar for the Fir programming language",
+  "main": "bindings/node",
+  "keywords": ["tree-sitter", "parser", "fir"],
+  "tree-sitter": [
+    {
+      "scope": "source.fir",
+      "file-types": ["fir"],
+      "highlights": "queries/highlights.scm"
+    }
+  ],
+  "devDependencies": {
+    "tree-sitter-cli": "^0.26.0"
+  }
+}
