@@ -17,18 +17,18 @@ module.exports = grammar({
 
   extras: $ => [$.line_comment, $.block_comment],
 
+  conflicts: $ => [
+    [$.constructor_expression, $.sequence_expression],
+  ],
+
   externals: $ => [
     // Layout tokens (0-2)
     $._start_block,   // emitted by scanner after ':' when block follows (combines NEWLINE+INDENT)
     $._end_block,     // emitted by scanner when block ends (DEDENT)
     $._newline,
 
-    // Identifiers (3-9)
+    // Identifiers (3-5)
     $.upper_id,
-    $.upper_id_path,             // UpperId.UpperId (no spaces)
-    $.upper_id_lbracket,        // UpperId[ (no space)
-    $.upper_id_path_lbracket,   // UpperIdPath[ (no space)
-    $.upper_id_dot_lbracket,    // UpperId.[
     $.lower_id,
     $.label,                     // 'ident
 
@@ -55,8 +55,6 @@ module.exports = grammar({
     $.lbrace,           // {
     $.rbrace,           // }
     $.backslash_lparen,  // \(
-    $.lparen_row,      // row(
-    $.lbracket_row,    // row[
 
     // Punctuation (27-33)
     $._colon,           // :
@@ -119,6 +117,7 @@ module.exports = grammar({
     $.kw_type,
     $.kw_value,
     $.kw_while,
+    $.kw_row,
   ],
 
   rules: {
@@ -138,11 +137,11 @@ module.exports = grammar({
       // [value] type Name TypeDeclRhs
       seq(optional($.kw_value), $.kw_type, $.upper_id, $._type_decl_rhs),
       // [value] type Name[TypeParams] TypeDeclRhs
-      seq(optional($.kw_value), $.kw_type, $.upper_id_lbracket, $.type_params, $._type_decl_rhs),
+      seq(optional($.kw_value), $.kw_type, $.upper_id, $.lbracket, $.type_params, $._type_decl_rhs),
       // prim type Name NEWLINE
       seq($.kw_prim, $.kw_type, $.upper_id, $._newline),
       // prim type Name[TypeParams] NEWLINE
-      seq($.kw_prim, $.kw_type, $.upper_id_lbracket, $.type_params, $._newline),
+      seq($.kw_prim, $.kw_type, $.upper_id, $.lbracket, $.type_params, $._newline),
     ),
 
     _type_decl_rhs: $ => choice(
@@ -178,7 +177,7 @@ module.exports = grammar({
 
     named_type: $ => choice(
       $.upper_id,
-      seq($.upper_id_lbracket, sep($._type, $._comma), $.rbracket),
+      seq($.upper_id, $.lbracket, sep($._type, $._comma), $.rbracket),
     ),
 
     type_variable: $ => $.lower_id,
@@ -187,19 +186,19 @@ module.exports = grammar({
 
     record_type: $ => choice(
       seq($.lparen, sep($.record_type_field, $._comma), optional($.row_extension), $.rparen),
-      seq($.lparen_row, sep($.record_type_field, $._comma), optional($.row_extension), $.rparen),
+      seq($.kw_row, $.lparen, sep($.record_type_field, $._comma), optional($.row_extension), $.rparen),
     ),
 
     variant_type: $ => choice(
       seq($.lbracket, sep($._named_type_entry, $._comma), optional($.row_extension), $.rbracket),
-      seq($.lbracket_row, sep($._named_type_entry, $._comma), optional($.row_extension), $.rbracket),
+      seq($.kw_row, $.lbracket, sep($._named_type_entry, $._comma), optional($.row_extension), $.rbracket),
     ),
 
     paren_type: $ => seq($.lparen, $._type, $.rparen),
 
     _named_type_entry: $ => choice(
       $.upper_id,
-      seq($.upper_id_lbracket, sep($._type, $._comma), $.rbracket),
+      seq($.upper_id, $.lbracket, sep($._type, $._comma), $.rbracket),
     ),
 
     record_type_field: $ => seq($.lower_id, $._colon, $._type),
@@ -333,9 +332,9 @@ module.exports = grammar({
 
     constructor_expression: $ => prec(0, choice(
       $.upper_id,
-      seq($.upper_id_lbracket, sep1($._type, $._comma), $.rbracket),
-      $.upper_id_path,
-      seq($.upper_id_path_lbracket, sep1($._type, $._comma), $.rbracket),
+      seq($.upper_id, $.lbracket, sep1($._type, $._comma), $.rbracket),
+      seq($.upper_id, $._dot, $.upper_id),
+      seq($.upper_id, $._dot, $.upper_id, $.lbracket, sep1($._type, $._comma), $.rbracket),
     )),
 
     parenthesized_expression: $ => prec(0, seq($.lparen, $._expr, $.rparen)),
@@ -358,7 +357,7 @@ module.exports = grammar({
 
     sequence_expression: $ => prec(0, choice(
       seq($.lbracket, sep($.sequence_element, $._comma), $.rbracket),
-      seq($.upper_id_dot_lbracket, sep($.sequence_element, $._comma), $.rbracket),
+      seq($.upper_id, $._dot, $.lbracket, sep($.sequence_element, $._comma), $.rbracket),
     )),
 
     sequence_element: $ => choice(
@@ -457,14 +456,17 @@ module.exports = grammar({
 
     variable_pattern: $ => $.lower_id,
 
-    bare_constructor_pattern: $ => prec(-1, $._constructor),
+    bare_constructor_pattern: $ => prec(-1, choice(
+      $.upper_id,
+      seq($.upper_id, $._dot, $.upper_id),
+    )),
 
     constructor_pattern: $ => choice(
-      seq($._constructor, $.lparen, $._field_pats, $.rparen),
-      seq($._constructor, $.lparen, $.rparen),
+      seq($.upper_id, $.lparen, $._field_pats, $.rparen),
+      seq($.upper_id, $.lparen, $.rparen),
+      seq($.upper_id, $._dot, $.upper_id, $.lparen, $._field_pats, $.rparen),
+      seq($.upper_id, $._dot, $.upper_id, $.lparen, $.rparen),
     ),
-
-    _constructor: $ => choice($.upper_id, $.upper_id_path),
 
     record_pattern: $ => choice(
       seq($.lparen, $._field_pats, $.rparen),
@@ -505,9 +507,9 @@ module.exports = grammar({
     // ==================== Trait declarations ====================
 
     trait_declaration: $ => choice(
-      seq($.kw_trait, $.upper_id_lbracket, sep($.lower_id, $._comma), $.rbracket, $._colon,
+      seq($.kw_trait, $.upper_id, $.lbracket, sep($.lower_id, $._comma), $.rbracket, $._colon,
           $._start_block, repeat1($._trait_item), $._end_block),
-      seq($.kw_trait, $.upper_id_lbracket, sep($.lower_id, $._comma), $.rbracket),
+      seq($.kw_trait, $.upper_id, $.lbracket, sep($.lower_id, $._comma), $.rbracket),
     ),
 
     _trait_item: $ => $.trait_function_declaration,
@@ -521,9 +523,9 @@ module.exports = grammar({
     // ==================== Impl declarations ====================
 
     impl_declaration: $ => choice(
-      seq($.kw_impl, optional($.context), $.upper_id_lbracket, sep($._type, $._comma), $.rbracket, $._colon,
+      seq($.kw_impl, optional($.context), $.upper_id, $.lbracket, sep($._type, $._comma), $.rbracket, $._colon,
           $._start_block, repeat1($._impl_item), $._end_block),
-      seq($.kw_impl, optional($.context), $.upper_id_lbracket, sep($._type, $._comma), $.rbracket),
+      seq($.kw_impl, optional($.context), $.upper_id, $.lbracket, sep($._type, $._comma), $.rbracket),
     ),
 
     _impl_item: $ => $.impl_function_declaration,

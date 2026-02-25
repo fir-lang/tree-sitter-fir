@@ -91,15 +91,11 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "upper_id",
-          "named": true
-        },
-        {
-          "type": "upper_id_path",
           "named": true
         }
       ]
@@ -479,6 +475,10 @@
           "named": true
         },
         {
+          "type": "lbracket",
+          "named": true
+        },
+        {
           "type": "named_type",
           "named": true
         },
@@ -500,18 +500,6 @@
         },
         {
           "type": "upper_id",
-          "named": true
-        },
-        {
-          "type": "upper_id_lbracket",
-          "named": true
-        },
-        {
-          "type": "upper_id_path",
-          "named": true
-        },
-        {
-          "type": "upper_id_path_lbracket",
           "named": true
         },
         {
@@ -558,10 +546,6 @@
         },
         {
           "type": "upper_id",
-          "named": true
-        },
-        {
-          "type": "upper_id_path",
           "named": true
         }
       ]
@@ -1491,6 +1475,10 @@
           "named": true
         },
         {
+          "type": "lbracket",
+          "named": true
+        },
+        {
           "type": "named_type",
           "named": true
         },
@@ -1511,7 +1499,7 @@
           "named": true
         },
         {
-          "type": "upper_id_lbracket",
+          "type": "upper_id",
           "named": true
         },
         {
@@ -2328,6 +2316,10 @@
           "named": true
         },
         {
+          "type": "lbracket",
+          "named": true
+        },
+        {
           "type": "named_type",
           "named": true
         },
@@ -2349,10 +2341,6 @@
         },
         {
           "type": "upper_id",
-          "named": true
-        },
-        {
-          "type": "upper_id_lbracket",
           "named": true
         },
         {
@@ -2770,11 +2758,11 @@
       "required": true,
       "types": [
         {
-          "type": "lparen",
+          "type": "kw_row",
           "named": true
         },
         {
-          "type": "lparen_row",
+          "type": "lparen",
           "named": true
         },
         {
@@ -3013,7 +3001,7 @@
           "named": true
         },
         {
-          "type": "upper_id_dot_lbracket",
+          "type": "upper_id",
           "named": true
         }
       ]
@@ -3252,6 +3240,10 @@
           "named": true
         },
         {
+          "type": "lbracket",
+          "named": true
+        },
+        {
           "type": "lower_id",
           "named": true
         },
@@ -3264,7 +3256,7 @@
           "named": true
         },
         {
-          "type": "upper_id_lbracket",
+          "type": "upper_id",
           "named": true
         }
       ]
@@ -3425,6 +3417,10 @@
           "named": true
         },
         {
+          "type": "lbracket",
+          "named": true
+        },
+        {
           "type": "lparen",
           "named": true
         },
@@ -3438,10 +3434,6 @@
         },
         {
           "type": "upper_id",
-          "named": true
-        },
-        {
-          "type": "upper_id_lbracket",
           "named": true
         }
       ]
@@ -3650,11 +3642,11 @@
           "named": true
         },
         {
-          "type": "lbracket",
+          "type": "kw_row",
           "named": true
         },
         {
-          "type": "lbracket_row",
+          "type": "lbracket",
           "named": true
         },
         {
@@ -3683,10 +3675,6 @@
         },
         {
           "type": "upper_id",
-          "named": true
-        },
-        {
-          "type": "upper_id_lbracket",
           "named": true
         },
         {
@@ -3905,6 +3893,10 @@
     "named": true
   },
   {
+    "type": "kw_row",
+    "named": true
+  },
+  {
     "type": "kw_trait",
     "named": true
   },
@@ -3933,10 +3925,6 @@
     "named": true
   },
   {
-    "type": "lbracket_row",
-    "named": true
-  },
-  {
     "type": "line_comment",
     "named": true,
     "extra": true
@@ -3947,10 +3935,6 @@
   },
   {
     "type": "lparen",
-    "named": true
-  },
-  {
-    "type": "lparen_row",
     "named": true
   },
   {
@@ -3967,22 +3951,6 @@
   },
   {
     "type": "upper_id",
-    "named": true
-  },
-  {
-    "type": "upper_id_dot_lbracket",
-    "named": true
-  },
-  {
-    "type": "upper_id_lbracket",
-    "named": true
-  },
-  {
-    "type": "upper_id_path",
-    "named": true
-  },
-  {
-    "type": "upper_id_path_lbracket",
     "named": true
   }
 ]

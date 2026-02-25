@@ -11,12 +11,8 @@ enum TokenType {
     END_BLOCK,    // emitted when an indented block ends (DEDENT)
     NEWLINE,
 
-    // Identifiers (3-9)
+    // Identifiers (3-5)
     UPPER_ID,
-    UPPER_ID_PATH,
-    UPPER_ID_LBRACKET,
-    UPPER_ID_PATH_LBRACKET,
-    UPPER_ID_DOT_LBRACKET,
     LOWER_ID,
     LABEL,
 
@@ -43,10 +39,8 @@ enum TokenType {
     LBRACE,
     RBRACE,
     BACKSLASH_LPAREN,
-    LPAREN_ROW,
-    LBRACKET_ROW,
 
-    // Punctuation (28-35)
+    // Punctuation (26-33)
     COLON,
     COMMA,
     DOT,
@@ -107,6 +101,10 @@ enum TokenType {
     KW_TYPE,
     KW_VALUE,
     KW_WHILE,
+    // 'row' is not a keyword in the reference implementation, but it is here,
+    // to be able to treat `row[` as two tokens and use the `[` as a delimiter
+    // in queries.
+    KW_ROW,
 
     TOKEN_COUNT,
 };
@@ -284,6 +282,7 @@ static const Keyword keywords[] = {
     {"or", KW_OR},
     {"prim", KW_PRIM},
     {"return", KW_RETURN},
+    {"row", KW_ROW},
     {"trait", KW_TRAIT},
     {"type", KW_TYPE},
     {"value", KW_VALUE},
@@ -302,11 +301,10 @@ static enum TokenType lookup_keyword(const char *word, int len) {
 
 // ==================== Token scanning functions ====================
 
-// Scan an upper-case identifier and its variants.
-// Assumes lookahead is '_' or uppercase letter. Scans the full id then checks
-// for path/lbracket variants.
-// Returns the token type.
-static enum TokenType scan_upper_id(TSLexer *lexer, Scanner *scanner, const bool *valid) {
+// Scan an upper-case identifier.
+// Assumes lookahead is '_' or uppercase letter.
+// Returns the token type (UPPER_ID or KW_UPPER_FN).
+static enum TokenType scan_upper_id(TSLexer *lexer, const bool *valid) {
     // Consume _*[A-Z][A-Za-z0-9_]*
     char word[64];
     int len = 0;
@@ -316,73 +314,17 @@ static enum TokenType scan_upper_id(TSLexer *lexer, Scanner *scanner, const bool
     while (is_id_char(lexer->lookahead) && len < 63) { word[len++] = (char)advance(lexer); }
     word[len] = '\0';
 
-    // Check for "Fn" keyword
-    if (len == 2 && word[0] == 'F' && word[1] == 'n') {
-        lexer->mark_end(lexer);
-        if (valid[KW_UPPER_FN]) return KW_UPPER_FN;
-        // Fall through to UPPER_ID if Fn keyword not valid
-    }
-
-    // Now check for path: .UpperId
-    // and for .[  (dot-lbracket)
-    // and for [   (lbracket)
     lexer->mark_end(lexer);
 
-    if (lexer->lookahead == '.') {
-        advance(lexer); // consume '.'
-
-        if (lexer->lookahead == '[') {
-            // UpperId.[
-            if (valid[UPPER_ID_DOT_LBRACKET]) {
-                advance(lexer); // consume '['
-                lexer->mark_end(lexer);
-                push_frame(scanner, FRAME_BRACKET, 0);
-                return UPPER_ID_DOT_LBRACKET;
-            }
-            // Fall through to just UPPER_ID
-            return UPPER_ID;
-        }
-
-        // Check for .UpperId (path)
-        // Need _*[A-Z]
-        int underscores = 0;
-        while (lexer->lookahead == '_') { advance(lexer); underscores++; }
-
-        if (is_upper(lexer->lookahead)) {
-            // It's a path: UpperId.UpperId
-            advance(lexer); // first upper char of second component
-            while (is_id_char(lexer->lookahead)) advance(lexer);
-            lexer->mark_end(lexer);
-
-            // Check for [ after path
-            if (lexer->lookahead == '[' && valid[UPPER_ID_PATH_LBRACKET]) {
-                advance(lexer); // consume '['
-                lexer->mark_end(lexer);
-                push_frame(scanner, FRAME_BRACKET, 0);
-                return UPPER_ID_PATH_LBRACKET;
-            }
-
-            return UPPER_ID_PATH;
-        }
-
-        // Not a path - just UpperId, don't consume the '.' and what follows
-        return UPPER_ID;
-    }
-
-    if (lexer->lookahead == '[') {
-        if (valid[UPPER_ID_LBRACKET]) {
-            advance(lexer); // consume '['
-            lexer->mark_end(lexer);
-            push_frame(scanner, FRAME_BRACKET, 0);
-            return UPPER_ID_LBRACKET;
-        }
+    // Check for "Fn" keyword
+    if (len == 2 && word[0] == 'F' && word[1] == 'n') {
+        if (valid[KW_UPPER_FN]) return KW_UPPER_FN;
     }
 
     return UPPER_ID;
 }
 
 // Scan a lower-case identifier or keyword.
-// Also handles 'row(' and 'row[' combinations.
 static enum TokenType scan_lower_id_or_keyword(TSLexer *lexer, Scanner *scanner, const bool *valid) {
     char word[64];
     int len = 0;
@@ -402,22 +344,6 @@ static enum TokenType scan_lower_id_or_keyword(TSLexer *lexer, Scanner *scanner,
     word[len] = '\0';
 
     lexer->mark_end(lexer);
-
-    // Check for 'row(' and 'row['
-    if (len == 3 && strncmp(word, "row", 3) == 0) {
-        if (lexer->lookahead == '(' && valid[LPAREN_ROW]) {
-            advance(lexer); // consume '('
-            lexer->mark_end(lexer);
-            push_frame(scanner, FRAME_PAREN, 0);
-            return LPAREN_ROW;
-        }
-        if (lexer->lookahead == '[' && valid[LBRACKET_ROW]) {
-            advance(lexer); // consume '['
-            lexer->mark_end(lexer);
-            push_frame(scanner, FRAME_BRACKET, 0);
-            return LBRACKET_ROW;
-        }
-    }
 
     // Check for keyword
     enum TokenType kw = lookup_keyword(word, len);
@@ -892,44 +818,8 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid) {
                 while (is_id_char(lexer->lookahead)) advance(lexer);
                 lexer->mark_end(lexer);
 
-                // Check path/lbracket variants
-                if (lexer->lookahead == '.') {
-                    advance(lexer);
-                    if (lexer->lookahead == '[' && valid[UPPER_ID_DOT_LBRACKET]) {
-                        advance(lexer);
-                        lexer->mark_end(lexer);
-                        push_frame(scanner, FRAME_BRACKET, 0);
-                        lexer->result_symbol = UPPER_ID_DOT_LBRACKET;
-                        return true;
-                    }
-                    // Check for .UpperId path
-                    int us = 0;
-                    while (lexer->lookahead == '_') { advance(lexer); us++; }
-                    if (is_upper(lexer->lookahead)) {
-                        advance(lexer);
-                        while (is_id_char(lexer->lookahead)) advance(lexer);
-                        lexer->mark_end(lexer);
-                        if (lexer->lookahead == '[' && valid[UPPER_ID_PATH_LBRACKET]) {
-                            advance(lexer);
-                            lexer->mark_end(lexer);
-                            push_frame(scanner, FRAME_BRACKET, 0);
-                            lexer->result_symbol = UPPER_ID_PATH_LBRACKET;
-                            return true;
-                        }
-                        lexer->result_symbol = UPPER_ID_PATH;
-                        return true;
-                    }
-                    // Not a path, revert to just upper_id
-                    lexer->result_symbol = UPPER_ID;
-                    return true;
-                }
-                if (lexer->lookahead == '[' && valid[UPPER_ID_LBRACKET]) {
-                    advance(lexer);
-                    lexer->mark_end(lexer);
-                    push_frame(scanner, FRAME_BRACKET, 0);
-                    lexer->result_symbol = UPPER_ID_LBRACKET;
-                    return true;
-                }
+                // Check for "Fn" keyword
+                // (unlikely with leading underscore, but consistent)
                 lexer->result_symbol = UPPER_ID;
                 return true;
             }
@@ -952,7 +842,7 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid) {
         }
 
         // Starts with uppercase letter
-        enum TokenType tt = scan_upper_id(lexer, scanner, valid);
+        enum TokenType tt = scan_upper_id(lexer, valid);
         if (tt != TOKEN_COUNT && valid[tt]) {
             lexer->result_symbol = tt;
             return true;

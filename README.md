@@ -25,9 +25,9 @@ indentation sensitivity. I recommend always using an AI to make changes, or at
 least to debug any unintentional changes.
 
 The scanner and grammar should follow the reference implementation's as much as
-possible.
-
-The grammar should have no conflicts. (the `conflicts` field)
+possible. We can't completely avoid `conflicts` as we don't want to combine
+tokens in this implementation (as queries can only deal with whole tokens), but
+we try to keep it as small as possible.
 
 **Testing:** `test.sh` takes a directory with Fir files as argument. It
 recursively scans all subdirectories, parses all `.fir` files, and checks for

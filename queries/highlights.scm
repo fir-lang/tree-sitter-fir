@@ -22,6 +22,7 @@
   (kw_or)
   (kw_prim)
   (kw_return)
+  (kw_row)
   (kw_trait)
   (kw_type)
   (kw_value)
@@ -53,6 +54,10 @@
 
 (type_declaration (upper_id) @type)
 
+(trait_declaration (upper_id) @type)
+
+(impl_declaration (upper_id) @type)
+
 (parent_type (upper_id) @type)
 
 (type_variable (lower_id) @type)
@@ -64,10 +69,10 @@
 (constructor_declaration (upper_id) @constructor)
 
 (constructor_expression (upper_id) @constructor)
-(constructor_expression (upper_id_path) @constructor)
+
+(bare_constructor_pattern (upper_id) @constructor)
 
 (constructor_pattern (upper_id) @constructor)
-(constructor_pattern (upper_id_path) @constructor)
 
 ; ==================== Variables (general, low priority) ====================
 
