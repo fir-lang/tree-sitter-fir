@@ -193,6 +193,10 @@
       "required": true,
       "types": [
         {
+          "type": "backslash_lparen",
+          "named": true
+        },
+        {
           "type": "lambda_param",
           "named": true
         },
@@ -206,6 +210,10 @@
         },
         {
           "type": "record_type",
+          "named": true
+        },
+        {
+          "type": "rparen",
           "named": true
         },
         {
@@ -378,6 +386,10 @@
           "named": true
         },
         {
+          "type": "lparen",
+          "named": true
+        },
+        {
           "type": "parenthesized_expression",
           "named": true
         },
@@ -387,6 +399,10 @@
         },
         {
           "type": "return_expression",
+          "named": true
+        },
+        {
+          "type": "rparen",
           "named": true
         },
         {
@@ -436,6 +452,14 @@
           "named": true
         },
         {
+          "type": "lparen",
+          "named": true
+        },
+        {
+          "type": "rparen",
+          "named": true
+        },
+        {
           "type": "upper_id",
           "named": true
         }
@@ -463,6 +487,10 @@
           "named": true
         },
         {
+          "type": "rbracket",
+          "named": true
+        },
+        {
           "type": "record_type",
           "named": true
         },
@@ -475,7 +503,15 @@
           "named": true
         },
         {
+          "type": "upper_id_lbracket",
+          "named": true
+        },
+        {
           "type": "upper_id_path",
+          "named": true
+        },
+        {
+          "type": "upper_id_path_lbracket",
           "named": true
         },
         {
@@ -513,6 +549,14 @@
           "named": true
         },
         {
+          "type": "lparen",
+          "named": true
+        },
+        {
+          "type": "rparen",
+          "named": true
+        },
+        {
           "type": "upper_id",
           "named": true
         },
@@ -529,10 +573,14 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "fn_type",
+          "named": true
+        },
+        {
+          "type": "lbracket",
           "named": true
         },
         {
@@ -541,6 +589,10 @@
         },
         {
           "type": "paren_type",
+          "named": true
+        },
+        {
+          "type": "rbracket",
           "named": true
         },
         {
@@ -983,6 +1035,10 @@
           "named": true
         },
         {
+          "type": "lparen",
+          "named": true
+        },
+        {
           "type": "named_type",
           "named": true
         },
@@ -992,6 +1048,10 @@
         },
         {
           "type": "record_type",
+          "named": true
+        },
+        {
+          "type": "rparen",
           "named": true
         },
         {
@@ -1439,11 +1499,19 @@
           "named": true
         },
         {
+          "type": "rbracket",
+          "named": true
+        },
+        {
           "type": "record_type",
           "named": true
         },
         {
           "type": "type_variable",
+          "named": true
+        },
+        {
+          "type": "upper_id_lbracket",
           "named": true
         },
         {
@@ -1551,6 +1619,14 @@
         {
           "type": "kw_import",
           "named": true
+        },
+        {
+          "type": "lbracket",
+          "named": true
+        },
+        {
+          "type": "rbracket",
+          "named": true
         }
       ]
     }
@@ -1578,6 +1654,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "backslash_lparen",
+          "named": true
+        },
         {
           "type": "binary_expression",
           "named": true
@@ -1636,6 +1716,10 @@
         },
         {
           "type": "return_expression",
+          "named": true
+        },
+        {
+          "type": "rparen",
           "named": true
         },
         {
@@ -2237,7 +2321,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "fn_type",
@@ -2252,6 +2336,10 @@
           "named": true
         },
         {
+          "type": "rbracket",
+          "named": true
+        },
+        {
           "type": "record_type",
           "named": true
         },
@@ -2261,6 +2349,10 @@
         },
         {
           "type": "upper_id",
+          "named": true
+        },
+        {
+          "type": "upper_id_lbracket",
           "named": true
         },
         {
@@ -2362,10 +2454,18 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
+          "type": "lparen",
+          "named": true
+        },
+        {
           "type": "param",
+          "named": true
+        },
+        {
+          "type": "rparen",
           "named": true
         }
       ]
@@ -2376,11 +2476,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "fn_type",
+          "named": true
+        },
+        {
+          "type": "lparen",
           "named": true
         },
         {
@@ -2393,6 +2497,10 @@
         },
         {
           "type": "record_type",
+          "named": true
+        },
+        {
+          "type": "rparen",
           "named": true
         },
         {
@@ -2426,8 +2534,8 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
         {
           "type": "binary_expression",
@@ -2474,6 +2582,10 @@
           "named": true
         },
         {
+          "type": "lparen",
+          "named": true
+        },
+        {
           "type": "match_expression",
           "named": true
         },
@@ -2487,6 +2599,10 @@
         },
         {
           "type": "return_expression",
+          "named": true
+        },
+        {
+          "type": "rparen",
           "named": true
         },
         {
@@ -2514,10 +2630,18 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
+          "type": "lparen",
+          "named": true
+        },
+        {
           "type": "record_field_expression",
+          "named": true
+        },
+        {
+          "type": "rparen",
           "named": true
         }
       ]
@@ -2620,10 +2744,18 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "field_pattern",
+          "named": true
+        },
+        {
+          "type": "lparen",
+          "named": true
+        },
+        {
+          "type": "rparen",
           "named": true
         }
       ]
@@ -2635,14 +2767,26 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
+        {
+          "type": "lparen",
+          "named": true
+        },
+        {
+          "type": "lparen_row",
+          "named": true
+        },
         {
           "type": "record_type_field",
           "named": true
         },
         {
           "type": "row_extension",
+          "named": true
+        },
+        {
+          "type": "rparen",
           "named": true
         }
       ]
@@ -2854,10 +2998,22 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
+          "type": "lbracket",
+          "named": true
+        },
+        {
+          "type": "rbracket",
+          "named": true
+        },
+        {
           "type": "sequence_element",
+          "named": true
+        },
+        {
+          "type": "upper_id_dot_lbracket",
           "named": true
         }
       ]
@@ -2944,8 +3100,16 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
+        {
+          "type": "begin_str",
+          "named": true
+        },
+        {
+          "type": "end_str",
+          "named": true
+        },
         {
           "type": "string_content",
           "named": true
@@ -2962,9 +3126,13 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
+        {
+          "type": "begin_interpolation",
+          "named": true
+        },
         {
           "type": "binary_expression",
           "named": true
@@ -2987,6 +3155,10 @@
         },
         {
           "type": "do_expression",
+          "named": true
+        },
+        {
+          "type": "end_interpolation",
           "named": true
         },
         {
@@ -3049,9 +3221,17 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
+        {
+          "type": "begin_str",
+          "named": true
+        },
+        {
+          "type": "end_str",
+          "named": true
+        },
         {
           "type": "string_content",
           "named": true
@@ -3076,7 +3256,15 @@
           "named": true
         },
         {
+          "type": "rbracket",
+          "named": true
+        },
+        {
           "type": "trait_function_declaration",
+          "named": true
+        },
+        {
+          "type": "upper_id_lbracket",
           "named": true
         }
       ]
@@ -3171,10 +3359,14 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "fn_type",
+          "named": true
+        },
+        {
+          "type": "lbracket",
           "named": true
         },
         {
@@ -3183,6 +3375,10 @@
         },
         {
           "type": "paren_type",
+          "named": true
+        },
+        {
+          "type": "rbracket",
           "named": true
         },
         {
@@ -3229,11 +3425,23 @@
           "named": true
         },
         {
+          "type": "lparen",
+          "named": true
+        },
+        {
+          "type": "rparen",
+          "named": true
+        },
+        {
           "type": "type_params",
           "named": true
         },
         {
           "type": "upper_id",
+          "named": true
+        },
+        {
+          "type": "upper_id_lbracket",
           "named": true
         }
       ]
@@ -3245,10 +3453,14 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "lower_id",
+          "named": true
+        },
+        {
+          "type": "rbracket",
           "named": true
         }
       ]
@@ -3431,10 +3643,18 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "fn_type",
+          "named": true
+        },
+        {
+          "type": "lbracket",
+          "named": true
+        },
+        {
+          "type": "lbracket_row",
           "named": true
         },
         {
@@ -3443,6 +3663,10 @@
         },
         {
           "type": "paren_type",
+          "named": true
+        },
+        {
+          "type": "rbracket",
           "named": true
         },
         {
@@ -3459,6 +3683,10 @@
         },
         {
           "type": "upper_id",
+          "named": true
+        },
+        {
+          "type": "upper_id_lbracket",
           "named": true
         },
         {
@@ -3568,12 +3796,32 @@
     }
   },
   {
+    "type": "backslash_lparen",
+    "named": true
+  },
+  {
+    "type": "begin_interpolation",
+    "named": true
+  },
+  {
+    "type": "begin_str",
+    "named": true
+  },
+  {
     "type": "block_comment",
     "named": true,
     "extra": true
   },
   {
     "type": "char_literal",
+    "named": true
+  },
+  {
+    "type": "end_interpolation",
+    "named": true
+  },
+  {
+    "type": "end_str",
     "named": true
   },
   {
@@ -3681,12 +3929,36 @@
     "named": true
   },
   {
+    "type": "lbracket",
+    "named": true
+  },
+  {
+    "type": "lbracket_row",
+    "named": true
+  },
+  {
     "type": "line_comment",
     "named": true,
     "extra": true
   },
   {
     "type": "lower_id",
+    "named": true
+  },
+  {
+    "type": "lparen",
+    "named": true
+  },
+  {
+    "type": "lparen_row",
+    "named": true
+  },
+  {
+    "type": "rbracket",
+    "named": true
+  },
+  {
+    "type": "rparen",
     "named": true
   },
   {
@@ -3698,7 +3970,19 @@
     "named": true
   },
   {
+    "type": "upper_id_dot_lbracket",
+    "named": true
+  },
+  {
+    "type": "upper_id_lbracket",
+    "named": true
+  },
+  {
     "type": "upper_id_path",
+    "named": true
+  },
+  {
+    "type": "upper_id_path_lbracket",
     "named": true
   }
 ]

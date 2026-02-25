@@ -111,7 +111,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_upper_id_lbracket"
+              "name": "upper_id_lbracket"
             },
             {
               "type": "SYMBOL",
@@ -157,7 +157,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_upper_id_lbracket"
+              "name": "upper_id_lbracket"
             },
             {
               "type": "SYMBOL",
@@ -204,7 +204,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "_lparen"
+              "name": "lparen"
             },
             {
               "type": "CHOICE",
@@ -253,7 +253,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_rparen"
+              "name": "rparen"
             },
             {
               "type": "SYMBOL",
@@ -313,7 +313,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_rbracket"
+          "name": "rbracket"
         }
       ]
     },
@@ -349,7 +349,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_lparen"
+              "name": "lparen"
             },
             {
               "type": "CHOICE",
@@ -398,7 +398,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_rparen"
+              "name": "rparen"
             },
             {
               "type": "SYMBOL",
@@ -479,7 +479,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "_upper_id_lbracket"
+              "name": "upper_id_lbracket"
             },
             {
               "type": "CHOICE",
@@ -528,7 +528,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_rbracket"
+              "name": "rbracket"
             }
           ]
         }
@@ -547,7 +547,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_lparen"
+          "name": "lparen"
         },
         {
           "type": "CHOICE",
@@ -596,7 +596,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_rparen"
+          "name": "rparen"
         },
         {
           "type": "CHOICE",
@@ -620,7 +620,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "_lparen"
+              "name": "lparen"
             },
             {
               "type": "CHOICE",
@@ -681,7 +681,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_rparen"
+              "name": "rparen"
             }
           ]
         },
@@ -690,7 +690,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "_lparen_row"
+              "name": "lparen_row"
             },
             {
               "type": "CHOICE",
@@ -751,7 +751,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_rparen"
+              "name": "rparen"
             }
           ]
         }
@@ -765,7 +765,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "_lbracket"
+              "name": "lbracket"
             },
             {
               "type": "CHOICE",
@@ -826,7 +826,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_rbracket"
+              "name": "rbracket"
             }
           ]
         },
@@ -835,7 +835,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "_lbracket_row"
+              "name": "lbracket_row"
             },
             {
               "type": "CHOICE",
@@ -896,7 +896,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_rbracket"
+              "name": "rbracket"
             }
           ]
         }
@@ -907,7 +907,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_lparen"
+          "name": "lparen"
         },
         {
           "type": "SYMBOL",
@@ -915,7 +915,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_rparen"
+          "name": "rparen"
         }
       ]
     },
@@ -931,7 +931,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "_upper_id_lbracket"
+              "name": "upper_id_lbracket"
             },
             {
               "type": "CHOICE",
@@ -980,7 +980,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_rbracket"
+              "name": "rbracket"
             }
           ]
         }
@@ -1251,7 +1251,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_lparen"
+          "name": "lparen"
         },
         {
           "type": "CHOICE",
@@ -1300,7 +1300,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_rparen"
+          "name": "rparen"
         }
       ]
     },
@@ -1339,7 +1339,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_lbracket"
+          "name": "lbracket"
         },
         {
           "type": "CHOICE",
@@ -1388,7 +1388,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_rbracket"
+          "name": "rbracket"
         }
       ]
     },
@@ -1956,7 +1956,7 @@
             "members": [
               {
                 "type": "SYMBOL",
-                "name": "_upper_id_lbracket"
+                "name": "upper_id_lbracket"
               },
               {
                 "type": "SEQ",
@@ -1985,7 +1985,7 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "_rbracket"
+                "name": "rbracket"
               }
             ]
           },
@@ -1998,7 +1998,7 @@
             "members": [
               {
                 "type": "SYMBOL",
-                "name": "_upper_id_path_lbracket"
+                "name": "upper_id_path_lbracket"
               },
               {
                 "type": "SEQ",
@@ -2027,7 +2027,7 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "_rbracket"
+                "name": "rbracket"
               }
             ]
           }
@@ -2042,7 +2042,7 @@
         "members": [
           {
             "type": "SYMBOL",
-            "name": "_lparen"
+            "name": "lparen"
           },
           {
             "type": "SYMBOL",
@@ -2050,7 +2050,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "_rparen"
+            "name": "rparen"
           }
         ]
       }
@@ -2063,7 +2063,7 @@
         "members": [
           {
             "type": "SYMBOL",
-            "name": "_lparen"
+            "name": "lparen"
           },
           {
             "type": "CHOICE",
@@ -2112,7 +2112,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "_rparen"
+            "name": "rparen"
           }
         ]
       }
@@ -2139,7 +2139,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_begin_str"
+          "name": "begin_str"
         },
         {
           "type": "REPEAT",
@@ -2159,7 +2159,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_end_str"
+          "name": "end_str"
         }
       ]
     },
@@ -2168,7 +2168,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_begin_interpolation"
+          "name": "begin_interpolation"
         },
         {
           "type": "SYMBOL",
@@ -2176,7 +2176,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_end_interpolation"
+          "name": "end_interpolation"
         }
       ]
     },
@@ -2192,7 +2192,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "_lparen"
+            "name": "lparen"
           },
           {
             "type": "CHOICE",
@@ -2241,7 +2241,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "_rparen"
+            "name": "rparen"
           }
         ]
       }
@@ -2290,7 +2290,7 @@
             "members": [
               {
                 "type": "SYMBOL",
-                "name": "_lbracket"
+                "name": "lbracket"
               },
               {
                 "type": "CHOICE",
@@ -2339,7 +2339,7 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "_rbracket"
+                "name": "rbracket"
               }
             ]
           },
@@ -2348,7 +2348,7 @@
             "members": [
               {
                 "type": "SYMBOL",
-                "name": "_upper_id_dot_lbracket"
+                "name": "upper_id_dot_lbracket"
               },
               {
                 "type": "CHOICE",
@@ -2397,7 +2397,7 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "_rbracket"
+                "name": "rbracket"
               }
             ]
           }
@@ -2881,7 +2881,7 @@
         "members": [
           {
             "type": "SYMBOL",
-            "name": "_backslash_lparen"
+            "name": "backslash_lparen"
           },
           {
             "type": "CHOICE",
@@ -2930,7 +2930,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "_rparen"
+            "name": "rparen"
           },
           {
             "type": "CHOICE",
@@ -3016,7 +3016,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_lbracket"
+          "name": "lbracket"
         },
         {
           "type": "CHOICE",
@@ -3065,7 +3065,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_rbracket"
+          "name": "rbracket"
         }
       ]
     },
@@ -3338,7 +3338,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_backslash_lparen"
+          "name": "backslash_lparen"
         },
         {
           "type": "CHOICE",
@@ -3387,7 +3387,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_rparen"
+          "name": "rparen"
         },
         {
           "type": "CHOICE",
@@ -3484,7 +3484,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_lparen"
+              "name": "lparen"
             },
             {
               "type": "SYMBOL",
@@ -3492,7 +3492,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_rparen"
+              "name": "rparen"
             }
           ]
         },
@@ -3505,11 +3505,11 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_lparen"
+              "name": "lparen"
             },
             {
               "type": "SYMBOL",
-              "name": "_rparen"
+              "name": "rparen"
             }
           ]
         }
@@ -3536,7 +3536,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "_lparen"
+              "name": "lparen"
             },
             {
               "type": "SYMBOL",
@@ -3544,7 +3544,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_rparen"
+              "name": "rparen"
             }
           ]
         },
@@ -3553,11 +3553,11 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "_lparen"
+              "name": "lparen"
             },
             {
               "type": "SYMBOL",
-              "name": "_rparen"
+              "name": "rparen"
             }
           ]
         }
@@ -3572,7 +3572,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_begin_str"
+          "name": "begin_str"
         },
         {
           "type": "CHOICE",
@@ -3588,7 +3588,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_end_str"
+          "name": "end_str"
         }
       ]
     },
@@ -3758,7 +3758,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_lbracket"
+          "name": "lbracket"
         },
         {
           "type": "SEQ",
@@ -3799,7 +3799,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_rbracket"
+          "name": "rbracket"
         },
         {
           "type": "SYMBOL",
@@ -3844,7 +3844,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_upper_id_lbracket"
+              "name": "upper_id_lbracket"
             },
             {
               "type": "CHOICE",
@@ -3893,7 +3893,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_rbracket"
+              "name": "rbracket"
             },
             {
               "type": "SYMBOL",
@@ -3925,7 +3925,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_upper_id_lbracket"
+              "name": "upper_id_lbracket"
             },
             {
               "type": "CHOICE",
@@ -3974,7 +3974,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_rbracket"
+              "name": "rbracket"
             }
           ]
         }
@@ -4084,7 +4084,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_upper_id_lbracket"
+              "name": "upper_id_lbracket"
             },
             {
               "type": "CHOICE",
@@ -4133,7 +4133,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_rbracket"
+              "name": "rbracket"
             },
             {
               "type": "SYMBOL",
@@ -4177,7 +4177,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_upper_id_lbracket"
+              "name": "upper_id_lbracket"
             },
             {
               "type": "CHOICE",
@@ -4226,7 +4226,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_rbracket"
+              "name": "rbracket"
             }
           ]
         }
@@ -4348,15 +4348,15 @@
     },
     {
       "type": "SYMBOL",
-      "name": "_upper_id_lbracket"
+      "name": "upper_id_lbracket"
     },
     {
       "type": "SYMBOL",
-      "name": "_upper_id_path_lbracket"
+      "name": "upper_id_path_lbracket"
     },
     {
       "type": "SYMBOL",
-      "name": "_upper_id_dot_lbracket"
+      "name": "upper_id_dot_lbracket"
     },
     {
       "type": "SYMBOL",
@@ -4376,11 +4376,11 @@
     },
     {
       "type": "SYMBOL",
-      "name": "_begin_str"
+      "name": "begin_str"
     },
     {
       "type": "SYMBOL",
-      "name": "_end_str"
+      "name": "end_str"
     },
     {
       "type": "SYMBOL",
@@ -4388,11 +4388,11 @@
     },
     {
       "type": "SYMBOL",
-      "name": "_begin_interpolation"
+      "name": "begin_interpolation"
     },
     {
       "type": "SYMBOL",
-      "name": "_end_interpolation"
+      "name": "end_interpolation"
     },
     {
       "type": "SYMBOL",
@@ -4404,39 +4404,39 @@
     },
     {
       "type": "SYMBOL",
-      "name": "_lparen"
+      "name": "lparen"
     },
     {
       "type": "SYMBOL",
-      "name": "_rparen"
+      "name": "rparen"
     },
     {
       "type": "SYMBOL",
-      "name": "_lbracket"
+      "name": "lbracket"
     },
     {
       "type": "SYMBOL",
-      "name": "_rbracket"
+      "name": "rbracket"
     },
     {
       "type": "SYMBOL",
-      "name": "_lbrace"
+      "name": "lbrace"
     },
     {
       "type": "SYMBOL",
-      "name": "_rbrace"
+      "name": "rbrace"
     },
     {
       "type": "SYMBOL",
-      "name": "_backslash_lparen"
+      "name": "backslash_lparen"
     },
     {
       "type": "SYMBOL",
-      "name": "_lparen_row"
+      "name": "lparen_row"
     },
     {
       "type": "SYMBOL",
-      "name": "_lbracket_row"
+      "name": "lbracket_row"
     },
     {
       "type": "SYMBOL",
