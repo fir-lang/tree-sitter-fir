@@ -483,7 +483,7 @@ module.exports = grammar({
 
     _field_pats: $ => choice(
       $._dotdot,
-      sep1($.field_pattern, $._comma),
+      seq(sep1($.field_pattern, $._comma), optional($._comma)),  // allow trailing comma
       seq(sep1($.field_pattern, $._comma), $._comma, $._dotdot),
     ),
 
