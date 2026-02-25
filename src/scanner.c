@@ -205,49 +205,24 @@ static void skip_all_ws(TSLexer *lexer) {
     }
 }
 
-// Skip whitespace and comments to find the column of the first real token.
-// Used when scanning START_BLOCK: the ':' may be followed by comments on the same
-// line (or spanning multiple lines), so we need to look past them to find the
-// actual block indent column.
-static void skip_ws_and_comments(TSLexer *lexer) {
+// Skip newlines and blank lines (lines with only whitespace).
+// Stops at any non-whitespace character, including comments.
+static void skip_blank_lines(TSLexer *lexer) {
     while (true) {
-        // Skip horizontal whitespace
-        while (lexer->lookahead == ' ' || lexer->lookahead == '\t') {
+        if (lexer->lookahead == '\n' || lexer->lookahead == '\r') {
             skip(lexer);
+            continue;
         }
-        // Skip comments
-        if (lexer->lookahead == '#') {
-            skip(lexer); // consume '#'
-            if (lexer->lookahead == '|') {
-                // Block comment: skip until matching |#, handling nesting
-                skip(lexer); // consume '|'
-                int depth = 1;
-                while (depth > 0 && lexer->lookahead != 0) {
-                    if (lexer->lookahead == '#') {
-                        skip(lexer);
-                        if (lexer->lookahead == '|') { skip(lexer); depth++; }
-                    } else if (lexer->lookahead == '|') {
-                        skip(lexer);
-                        if (lexer->lookahead == '#') { skip(lexer); depth--; }
-                    } else {
-                        skip(lexer);
-                    }
-                }
-                // After block comment, continue to skip more ws/comments
+        if (lexer->lookahead == ' ' || lexer->lookahead == '\t') {
+            while (lexer->lookahead == ' ' || lexer->lookahead == '\t') {
+                skip(lexer);
+            }
+            // If we hit a newline, it was a blank line — continue skipping
+            if (lexer->lookahead == '\n' || lexer->lookahead == '\r') {
                 continue;
             }
-            // Line comment: skip to end of line
-            while (lexer->lookahead != '\n' && lexer->lookahead != '\r' && lexer->lookahead != 0) {
-                skip(lexer);
-            }
-            // Fall through to skip the newline below
-        }
-        // Skip newline(s)
-        if (lexer->lookahead == '\n' || lexer->lookahead == '\r') {
-            while (lexer->lookahead == '\n' || lexer->lookahead == '\r') {
-                skip(lexer);
-            }
-            continue; // re-check for more horizontal ws / comments
+            // Otherwise we found a non-blank line
+            break;
         }
         break;
     }
@@ -485,11 +460,14 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid) {
             return true;
         }
 
-        // Otherwise skip whitespace and any trailing line comments to find block column
-        skip_ws_and_comments(lexer);
+        // Skip remaining whitespace (newlines are not significant in non-indented mode).
+        // Don't skip comments — let section 4 emit them as proper tokens.
+        skip_all_ws(lexer);
 
-        // Check for START_BLOCK request inside non-indented context
-        if (valid[START_BLOCK]) {
+        // Check for START_BLOCK request inside non-indented context.
+        // If we're at a comment, fall through to section 4 to emit it first.
+        // Tree-sitter will call us again with valid[START_BLOCK] still true.
+        if (valid[START_BLOCK] && lexer->lookahead != '#') {
             uint32_t col = lexer->get_column(lexer);
             push_frame(scanner, FRAME_INDENTED, (uint16_t)col);
             lexer->result_symbol = START_BLOCK;
@@ -533,14 +511,41 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid) {
         }
 
         // Handle START_BLOCK request (grammar just saw ':' and wants to open a block).
-        // Skip past any trailing line comments and blank lines to find the actual
-        // column of the first token in the new block.
+        //
+        // Instead of consuming comments via skip() (which hides them from the parse
+        // tree), we fall through to section 4 to emit any comment as an extras token.
+        // Tree-sitter will call us again with valid[START_BLOCK] still true, and we
+        // can then emit START_BLOCK once we reach a non-comment token.
         if (valid[START_BLOCK]) {
-            skip_ws_and_comments(lexer);
-            uint32_t col = lexer->get_column(lexer);
-            push_frame(scanner, FRAME_INDENTED, (uint16_t)col);
-            lexer->result_symbol = START_BLOCK;
-            return true;
+            if (!at_newline) {
+                // Still on the ':' line after horizontal whitespace was skipped.
+                if (lexer->lookahead == '\n' || lexer->lookahead == '\r') {
+                    // Just whitespace after ':', skip to next non-blank line.
+                    skip_blank_lines(lexer);
+                    // Now at first non-blank-line token, fall through below.
+                } else if (lexer->lookahead != '#') {
+                    // Code on the same line as ':' (e.g. `A: expr`).
+                    // Use current column as block indent.
+                    uint32_t col = lexer->get_column(lexer);
+                    push_frame(scanner, FRAME_INDENTED, (uint16_t)col);
+                    lexer->result_symbol = START_BLOCK;
+                    return true;
+                }
+                // If lookahead is '#': comment on ':' line, fall through to
+                // section 4 to emit it. Tree-sitter will call us again with
+                // valid[START_BLOCK] still true.
+            }
+
+            // We've crossed a newline. At the first non-blank-line token.
+            // If it's a comment, fall through to section 4 to emit it.
+            // Otherwise emit START_BLOCK.
+            if (lexer->lookahead != '#') {
+                uint32_t col = lexer->get_column(lexer);
+                push_frame(scanner, FRAME_INDENTED, (uint16_t)col);
+                lexer->result_symbol = START_BLOCK;
+                return true;
+            }
+            // Fall through to section 4 to emit the comment.
         }
 
         // Check for closing delimiters/comma that terminate indented blocks

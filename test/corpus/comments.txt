@@ -1,0 +1,34 @@
+==================
+Comments
+==================
+
+# 1
+main(): # 2
+    # 3
+    f(#| 4 |#) # 5
+    # 6
+# 7
+
+---
+
+(source_file
+  (line_comment)
+  (function_declaration
+    (fun_sig
+      (lower_id)
+      (param_list
+        (lparen)
+        (rparen)))
+    (line_comment)
+    (line_comment)
+    (statements
+      (expression_statement
+        (call_expression
+          (variable_expression
+            (lower_id))
+          (lparen)
+          (block_comment)
+          (rparen))
+        (line_comment)))
+    (line_comment))
+  (line_comment))

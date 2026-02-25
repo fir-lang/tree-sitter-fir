@@ -41,6 +41,8 @@ now ignore those failures.
 
 `test.sh` should not report any parse failures.
 
+Also run `tree-sitter test`. `tree-sitter test -u` to update test expectations.
+
 **Useful commands:**
 
 - `tree-sitter generate` compiles the grammar to C.
