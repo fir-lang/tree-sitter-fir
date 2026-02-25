@@ -479,7 +479,7 @@ module.exports = grammar({
 
     variant_pattern: $ => prec(2, seq($._tilde, $._pattern)),
 
-    or_pattern: $ => prec.right(1, seq($._pattern, $._pipe, $._pattern)),
+    or_pattern: $ => prec.right(11, seq($._pattern, $._pipe, $._pattern)),
 
     _field_pats: $ => choice(
       $._dotdot,
