@@ -7,8 +7,8 @@
 // Token types - MUST match the externals array order in grammar.js exactly
 enum TokenType {
     // Layout tokens (0-2)
-    INDENT,
-    DEDENT,
+    START_BLOCK,  // emitted after ':' when an indented block follows (combines NEWLINE+INDENT)
+    END_BLOCK,    // emitted when an indented block ends (DEDENT)
     NEWLINE,
 
     // Identifiers (3-9)
@@ -129,7 +129,7 @@ typedef struct {
 typedef struct {
     Frame stack[MAX_DEPTH];
     uint8_t depth;           // always >= 1 (bottom = FRAME_INDENTED col=0)
-    uint8_t pending_dedents;
+    uint8_t pending_end_blocks;
     bool in_string;          // inside a string literal
     bool eof_newline_emitted;
 } Scanner;
@@ -207,20 +207,52 @@ static void skip_all_ws(TSLexer *lexer) {
     }
 }
 
-// Skip a line comment (# to end of line). Assumes '#' not yet consumed.
-// Returns true if it was a comment, false if it was a block comment start.
-static bool skip_line_comment_content(TSLexer *lexer) {
-    // '#' is current lookahead
-    advance(lexer);  // consume '#'
-    if (lexer->lookahead == '|') {
-        // This is a block comment start, not a line comment
-        return false;
+// Skip whitespace and comments to find the column of the first real token.
+// Used when scanning START_BLOCK: the ':' may be followed by comments on the same
+// line (or spanning multiple lines), so we need to look past them to find the
+// actual block indent column.
+static void skip_ws_and_comments(TSLexer *lexer) {
+    while (true) {
+        // Skip horizontal whitespace
+        while (lexer->lookahead == ' ' || lexer->lookahead == '\t') {
+            skip(lexer);
+        }
+        // Skip comments
+        if (lexer->lookahead == '#') {
+            skip(lexer); // consume '#'
+            if (lexer->lookahead == '|') {
+                // Block comment: skip until matching |#, handling nesting
+                skip(lexer); // consume '|'
+                int depth = 1;
+                while (depth > 0 && lexer->lookahead != 0) {
+                    if (lexer->lookahead == '#') {
+                        skip(lexer);
+                        if (lexer->lookahead == '|') { skip(lexer); depth++; }
+                    } else if (lexer->lookahead == '|') {
+                        skip(lexer);
+                        if (lexer->lookahead == '#') { skip(lexer); depth--; }
+                    } else {
+                        skip(lexer);
+                    }
+                }
+                // After block comment, continue to skip more ws/comments
+                continue;
+            }
+            // Line comment: skip to end of line
+            while (lexer->lookahead != '\n' && lexer->lookahead != '\r' && lexer->lookahead != 0) {
+                skip(lexer);
+            }
+            // Fall through to skip the newline below
+        }
+        // Skip newline(s)
+        if (lexer->lookahead == '\n' || lexer->lookahead == '\r') {
+            while (lexer->lookahead == '\n' || lexer->lookahead == '\r') {
+                skip(lexer);
+            }
+            continue; // re-check for more horizontal ws / comments
+        }
+        break;
     }
-    // Consume until end of line
-    while (lexer->lookahead != '\n' && lexer->lookahead != 0) {
-        advance(lexer);
-    }
-    return true;
 }
 
 // ==================== Keyword matching ====================
@@ -389,7 +421,6 @@ static enum TokenType scan_lower_id_or_keyword(TSLexer *lexer, Scanner *scanner,
 
     // Check for keyword
     enum TokenType kw = lookup_keyword(word, len);
-    // fprintf(stderr, "DEBUG: word='%s' kw=%d valid[kw]=%d valid[LOWER_ID]=%d\n", word, kw, kw != LOWER_ID ? valid[kw] : -1, valid[LOWER_ID]);
     if (kw != LOWER_ID && valid[kw]) {
         return kw;
     }
@@ -477,68 +508,14 @@ static bool scan_string_content(TSLexer *lexer) {
     }
 }
 
-// Scan a block comment. Assumes '#|' has already been detected but NOT consumed.
-static bool scan_block_comment(TSLexer *lexer) {
-    advance(lexer); // consume '#'
-    advance(lexer); // consume '|'
-    int depth = 1;
-
-    while (depth > 0 && lexer->lookahead != 0) {
-        if (lexer->lookahead == '#') {
-            advance(lexer);
-            if (lexer->lookahead == '|') {
-                advance(lexer);
-                depth++;
-            }
-        } else if (lexer->lookahead == '|') {
-            advance(lexer);
-            if (lexer->lookahead == '#') {
-                advance(lexer);
-                depth--;
-            }
-        } else {
-            advance(lexer);
-        }
-    }
-
-    return depth == 0;
-}
-
-// Scan a line comment. Assumes '#' is the current lookahead.
-static bool scan_line_comment(TSLexer *lexer) {
-    advance(lexer); // consume '#'
-    // Check it's not a block comment
-    if (lexer->lookahead == '|') return false;
-    // Consume until end of line
-    while (lexer->lookahead != '\n' && lexer->lookahead != 0) {
-        advance(lexer);
-    }
-    return true;
-}
-
 // ==================== Main scan function ====================
 
-static const char *token_names[] = {
-    "INDENT","DEDENT","NEWLINE","UPPER_ID","UPPER_ID_PATH","UPPER_ID_LBRACKET",
-    "UPPER_ID_PATH_LBRACKET","UPPER_ID_DOT_LBRACKET","LOWER_ID","LABEL",
-    "INT_LITERAL","CHAR_LITERAL","BEGIN_STR","END_STR","STRING_CONTENT",
-    "BEGIN_INTERPOLATION","END_INTERPOLATION","BLOCK_COMMENT","LINE_COMMENT",
-    "LPAREN","RPAREN","LBRACKET","RBRACKET","LBRACE","RBRACE","BACKSLASH_LPAREN",
-    "LPAREN_ROW","LBRACKET_ROW","COLON","COMMA","DOT","DOTDOT","EQ","UNDERSCORE",
-    "SLASH","SEMICOLON","PLUS","MINUS","STAR","EQEQ","NEQ","LT","GT","LTEQ","GTEQ",
-    "LSHIFT","RSHIFT","AMP","AMPAMP","PIPE","TILDE","EXCLAMATION","PERCENT","CARET",
-    "PLUSEQ","MINUSEQ","STAREQ","CARETEQ","KW_AND","KW_AS","KW_BREAK","KW_CONTINUE",
-    "KW_DO","KW_ELIF","KW_ELSE","KW_FN","KW_UPPER_FN","KW_FOR","KW_IF","KW_IMPL",
-    "KW_IMPORT","KW_IN","KW_IS","KW_LET","KW_LOOP","KW_MATCH","KW_NOT","KW_OR",
-    "KW_PRIM","KW_RETURN","KW_TRAIT","KW_TYPE","KW_VALUE","KW_WHILE"
-};
-
 static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid) {
-    // 1. Pending dedents
-    if (scanner->pending_dedents > 0 && valid[DEDENT]) {
-        scanner->pending_dedents--;
+    // 1. Pending end_blocks (dedents)
+    if (scanner->pending_end_blocks > 0 && valid[END_BLOCK]) {
+        scanner->pending_end_blocks--;
         pop_frame(scanner);
-        lexer->result_symbol = DEDENT;
+        lexer->result_symbol = END_BLOCK;
         return true;
     }
 
@@ -566,8 +543,7 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid) {
 
     // 3. Handle whitespace and layout
 
-    // In non-indented mode: skip whitespace, but check for NEWLINE/INDENT requests
-    // (needed for block expressions inside parens like `print(if x: ...)`)
+    // In non-indented mode: skip whitespace
     if (in_non_indented(scanner)) {
         // Skip horizontal whitespace first
         skip_horizontal_ws(lexer);
@@ -583,20 +559,19 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid) {
             return true;
         }
 
-        // Otherwise skip all remaining whitespace (including newlines)
-        skip_all_ws(lexer);
+        // Otherwise skip whitespace and any trailing line comments to find block column
+        skip_ws_and_comments(lexer);
 
-        // Check for INDENT request inside non-indented context
-        if (valid[INDENT]) {
+        // Check for START_BLOCK request inside non-indented context
+        if (valid[START_BLOCK]) {
             uint32_t col = lexer->get_column(lexer);
             push_frame(scanner, FRAME_INDENTED, (uint16_t)col);
-            lexer->result_symbol = INDENT;
+            lexer->result_symbol = START_BLOCK;
             return true;
         }
     } else {
-        // In indented mode: skip horizontal whitespace only
-        // Newlines are significant for layout
-        // Comments are NOT consumed — emitted as extras tokens
+        // In indented mode: skip horizontal whitespace only.
+        // Newlines are significant for layout.
 
         bool at_newline = false;
 
@@ -623,38 +598,39 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid) {
                 lexer->result_symbol = NEWLINE;
                 return true;
             }
-            if (valid[DEDENT] && top_frame(scanner).kind == FRAME_INDENTED && scanner->depth > 1) {
+            if (valid[END_BLOCK] && top_frame(scanner).kind == FRAME_INDENTED && scanner->depth > 1) {
                 pop_frame(scanner);
-                lexer->result_symbol = DEDENT;
+                lexer->result_symbol = END_BLOCK;
                 return true;
             }
             return false;
         }
 
-        // Handle INDENT request (grammar parsed `:` + NEWLINE and now wants INDENT)
-        // This can happen either at a newline or right after NEWLINE was emitted on previous call
-        if (valid[INDENT]) {
+        // Handle START_BLOCK request (grammar just saw ':' and wants to open a block).
+        // Skip past any trailing line comments and blank lines to find the actual
+        // column of the first token in the new block.
+        if (valid[START_BLOCK]) {
+            skip_ws_and_comments(lexer);
             uint32_t col = lexer->get_column(lexer);
             push_frame(scanner, FRAME_INDENTED, (uint16_t)col);
-            lexer->result_symbol = INDENT;
+            lexer->result_symbol = START_BLOCK;
             return true;
         }
 
         // Check for closing delimiters/comma that terminate indented blocks
-        // This must happen both at newlines AND on the same line (e.g., `u32(3))`)
         if (lexer->lookahead == ')' || lexer->lookahead == ']' ||
             lexer->lookahead == ',' || lexer->lookahead == '}') {
             if (valid[NEWLINE]) {
                 lexer->result_symbol = NEWLINE;
                 uint8_t count = indented_frames_above_delimiter(scanner);
                 if (count > 0) {
-                    scanner->pending_dedents = count;
+                    scanner->pending_end_blocks = count;
                 }
                 return true;
             }
-            if (valid[DEDENT] && top_frame(scanner).kind == FRAME_INDENTED && scanner->depth > 1) {
+            if (valid[END_BLOCK] && top_frame(scanner).kind == FRAME_INDENTED && scanner->depth > 1) {
                 pop_frame(scanner);
-                lexer->result_symbol = DEDENT;
+                lexer->result_symbol = END_BLOCK;
                 return true;
             }
         }
@@ -676,14 +652,14 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid) {
                 }
                 if (dedent_count == 0) dedent_count = 1; // at least one
                 if (valid[NEWLINE]) {
-                    scanner->pending_dedents = dedent_count;
+                    scanner->pending_end_blocks = dedent_count;
                     lexer->result_symbol = NEWLINE;
                     return true;
                 }
-                if (valid[DEDENT]) {
-                    scanner->pending_dedents = dedent_count - 1;
+                if (valid[END_BLOCK]) {
+                    scanner->pending_end_blocks = dedent_count - 1;
                     pop_frame(scanner);
-                    lexer->result_symbol = DEDENT;
+                    lexer->result_symbol = END_BLOCK;
                     return true;
                 }
             } else if (col == frame.block_col) {
@@ -692,11 +668,9 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid) {
                     return true;
                 }
             } else {
-                // col > frame.block_col: continuation line
-                if (valid[NEWLINE]) {
-                    lexer->result_symbol = NEWLINE;
-                    return true;
-                }
+                // col > frame.block_col: continuation line — no NEWLINE emitted.
+                // Matches the reference scanner which also emits nothing for continuation
+                // lines, allowing multi-line expressions (e.g. `if expr\n  is Pat:`).
             }
         }
     }
@@ -712,9 +686,9 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid) {
             lexer->result_symbol = NEWLINE;
             return true;
         }
-        if (valid[DEDENT] && top_frame(scanner).kind == FRAME_INDENTED && scanner->depth > 1) {
+        if (valid[END_BLOCK] && top_frame(scanner).kind == FRAME_INDENTED && scanner->depth > 1) {
             pop_frame(scanner);
-            lexer->result_symbol = DEDENT;
+            lexer->result_symbol = END_BLOCK;
             return true;
         }
         return false;
@@ -830,10 +804,6 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid) {
     // Braces
     if (c == '{' && valid[LBRACE]) {
         advance(lexer);
-        // Braces create an indented frame — peek at next token's column
-        // For now, push with col=0 and let indentation be handled normally
-        // Actually, braces in the reference push FRAME_INDENTED with the next token's col
-        // But we don't know the col yet. We'll handle this in INDENT.
         push_frame(scanner, FRAME_INDENTED, 0);
         lexer->result_symbol = LBRACE;
         return true;
@@ -841,7 +811,6 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid) {
 
     if (c == '}' && valid[RBRACE]) {
         advance(lexer);
-        // Pop the brace's INDENTED frame
         if (top_frame(scanner).kind == FRAME_INDENTED && scanner->depth > 1) {
             pop_frame(scanner);
         }
@@ -951,8 +920,6 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid) {
                         return true;
                     }
                     // Not a path, revert to just upper_id
-                    // But we already consumed '.', can't revert
-                    // This shouldn't happen in valid Fir code
                     lexer->result_symbol = UPPER_ID;
                     return true;
                 }
@@ -972,21 +939,13 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid) {
                 advance(lexer);
                 while (is_id_char(lexer->lookahead)) advance(lexer);
                 lexer->mark_end(lexer);
-
-                // We need to collect the word for keyword lookup
-                // But we already consumed it... For lower_id starting with _,
-                // it can't be a keyword anyway.
                 lexer->result_symbol = LOWER_ID;
                 return true;
             }
 
             // Just underscore(s) — return UNDERSCORE
-            // We consumed extra underscores above, need to handle carefully
-            // Actually just return the first underscore
-            // Reset and just consume one _
             if (valid[UNDERSCORE]) {
                 lexer->result_symbol = UNDERSCORE;
-                // mark_end was set at the first _ position + 1
                 return true;
             }
             return false;
@@ -995,7 +954,6 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid) {
         // Starts with uppercase letter
         enum TokenType tt = scan_upper_id(lexer, scanner, valid);
         if (tt != TOKEN_COUNT && valid[tt]) {
-            // Don't call mark_end here - scan_upper_id already handles it
             lexer->result_symbol = tt;
             return true;
         }
@@ -1205,7 +1163,7 @@ unsigned tree_sitter_fir_external_scanner_serialize(void *payload, char *buffer)
     unsigned pos = 0;
 
     buffer[pos++] = (char)scanner->depth;
-    buffer[pos++] = (char)scanner->pending_dedents;
+    buffer[pos++] = (char)scanner->pending_end_blocks;
     buffer[pos++] = (char)scanner->in_string;
     buffer[pos++] = (char)scanner->eof_newline_emitted;
 
@@ -1225,7 +1183,7 @@ void tree_sitter_fir_external_scanner_deserialize(void *payload, const char *buf
         scanner->depth = 1;
         scanner->stack[0].kind = FRAME_INDENTED;
         scanner->stack[0].block_col = 0;
-        scanner->pending_dedents = 0;
+        scanner->pending_end_blocks = 0;
         scanner->in_string = false;
         scanner->eof_newline_emitted = false;
         return;
@@ -1233,7 +1191,7 @@ void tree_sitter_fir_external_scanner_deserialize(void *payload, const char *buf
 
     unsigned pos = 0;
     scanner->depth = (uint8_t)buffer[pos++];
-    scanner->pending_dedents = (uint8_t)buffer[pos++];
+    scanner->pending_end_blocks = (uint8_t)buffer[pos++];
     scanner->in_string = (bool)buffer[pos++];
     scanner->eof_newline_emitted = (bool)buffer[pos++];
 

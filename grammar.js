@@ -19,8 +19,8 @@ module.exports = grammar({
 
   externals: $ => [
     // Layout tokens (0-2)
-    $._indent,
-    $._dedent,
+    $._start_block,   // emitted by scanner after ':' when block follows (combines NEWLINE+INDENT)
+    $._end_block,     // emitted by scanner when block ends (DEDENT)
     $._newline,
 
     // Identifiers (3-9)
@@ -149,7 +149,7 @@ module.exports = grammar({
       // Empty product
       $._newline,
       // Sum type
-      seq($._colon, $._newline, $._indent, $.constructor_list, $._dedent),
+      seq($._colon, $._start_block, $.constructor_list, $._end_block),
       // Product with fields
       seq($._lparen, sep($.field, $._comma), $._rparen, $._newline),
     ),
@@ -225,7 +225,7 @@ module.exports = grammar({
 
     function_declaration: $ => choice(
       // Block body
-      seq(optional($.parent_type), $._fun_sig, $._colon, $._newline, $._indent, $.statements, $._dedent),
+      seq(optional($.parent_type), $._fun_sig, $._colon, $._start_block, $.statements, $._end_block),
       // Inline body
       seq(optional($.parent_type), $._fun_sig, $._colon, $._inline_expr, $._newline),
       // No body / prim
@@ -287,17 +287,17 @@ module.exports = grammar({
 
     for_statement: $ => seq(
       optional($.label), $.kw_for, $._pattern, optional(seq($._colon, $._type)),
-      $.kw_in, $._expr, $._colon, $._newline, $._indent, $.statements, $._dedent,
+      $.kw_in, $._expr, $._colon, $._start_block, $.statements, $._end_block,
     ),
 
     while_statement: $ => seq(
       optional($.label), $.kw_while, $._expr, $._colon,
-      $._newline, $._indent, $.statements, $._dedent,
+      $._start_block, $.statements, $._end_block,
     ),
 
     loop_statement: $ => seq(
       optional($.label), $.kw_loop, $._colon,
-      $._newline, $._indent, $.statements, $._dedent,
+      $._start_block, $.statements, $._end_block,
     ),
 
     // ==================== Expressions ====================
@@ -413,32 +413,32 @@ module.exports = grammar({
 
     match_expression: $ => seq(
       $.kw_match, $._inline_expr, $._colon,
-      $._newline, $._indent, repeat($.match_arm), $._dedent,
+      $._start_block, repeat($.match_arm), $._end_block,
     ),
 
     match_arm: $ => choice(
-      seq($._pattern, $._colon, $._newline, $._indent, $.statements, $._dedent),
-      seq($._pattern, $.kw_if, $._expr, $._colon, $._newline, $._indent, $.statements, $._dedent),
+      seq($._pattern, $._colon, $._start_block, $.statements, $._end_block),
+      seq($._pattern, $.kw_if, $._expr, $._colon, $._start_block, $.statements, $._end_block),
       seq($._pattern, $._colon, $._statement),
       seq($._pattern, $.kw_if, $._expr, $._colon, $._statement),
     ),
 
     if_expression: $ => seq(
-      $.kw_if, $._expr, $._colon, $._newline, $._indent, $.statements, $._dedent,
+      $.kw_if, $._expr, $._colon, $._start_block, $.statements, $._end_block,
       repeat($.elif_clause),
       optional($.else_clause),
     ),
 
-    elif_clause: $ => seq($.kw_elif, $._expr, $._colon, $._newline, $._indent, $.statements, $._dedent),
+    elif_clause: $ => seq($.kw_elif, $._expr, $._colon, $._start_block, $.statements, $._end_block),
 
-    else_clause: $ => seq($.kw_else, $._colon, $._newline, $._indent, $.statements, $._dedent),
+    else_clause: $ => seq($.kw_else, $._colon, $._start_block, $.statements, $._end_block),
 
-    do_expression: $ => seq($.kw_do, $._colon, $._newline, $._indent, $.statements, $._dedent),
+    do_expression: $ => seq($.kw_do, $._colon, $._start_block, $.statements, $._end_block),
 
     block_lambda: $ => seq(
       $._backslash_lparen, sep($.lambda_param, $._comma), $._rparen,
       optional($._return_type), $._colon,
-      $._newline, $._indent, $.statements, $._dedent,
+      $._start_block, $.statements, $._end_block,
     ),
 
     // ==================== Patterns ====================
@@ -506,14 +506,14 @@ module.exports = grammar({
 
     trait_declaration: $ => choice(
       seq($.kw_trait, $._upper_id_lbracket, sep($.lower_id, $._comma), $._rbracket, $._colon,
-          $._newline, $._indent, repeat1($._trait_item), $._dedent),
+          $._start_block, repeat1($._trait_item), $._end_block),
       seq($.kw_trait, $._upper_id_lbracket, sep($.lower_id, $._comma), $._rbracket),
     ),
 
     _trait_item: $ => $.trait_function_declaration,
 
     trait_function_declaration: $ => choice(
-      seq($._fun_sig, $._colon, $._newline, $._indent, $.statements, $._dedent),
+      seq($._fun_sig, $._colon, $._start_block, $.statements, $._end_block),
       seq(optional($.kw_prim), $._fun_sig, $._newline),
       seq($._fun_sig, $._colon, $._inline_expr, $._newline),
     ),
@@ -522,14 +522,14 @@ module.exports = grammar({
 
     impl_declaration: $ => choice(
       seq($.kw_impl, optional($.context), $._upper_id_lbracket, sep($._type, $._comma), $._rbracket, $._colon,
-          $._newline, $._indent, repeat1($._impl_item), $._dedent),
+          $._start_block, repeat1($._impl_item), $._end_block),
       seq($.kw_impl, optional($.context), $._upper_id_lbracket, sep($._type, $._comma), $._rbracket),
     ),
 
     _impl_item: $ => $.impl_function_declaration,
 
     impl_function_declaration: $ => choice(
-      seq($._fun_sig, $._colon, $._newline, $._indent, $.statements, $._dedent),
+      seq($._fun_sig, $._colon, $._start_block, $.statements, $._end_block),
       seq(optional($.kw_prim), $._fun_sig, $._newline),
       seq($._fun_sig, $._colon, $._inline_expr, $._newline),
     ),
