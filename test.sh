@@ -2,7 +2,7 @@
 
 shopt -s globstar
 
-FILE="${1:-../fir/tests}"
+FILE="${1:-../fir}"
 
 pass=0
 fail=0

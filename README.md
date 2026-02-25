@@ -30,11 +30,14 @@ possible.
 The grammar should have no conflicts. (the `conflicts` field)
 
 **Testing:** `test.sh` takes a directory with Fir files as argument. It
-recursively scans all subdirectories and parses all `.fir` files and checks for
-`ERROR` nodes.
+recursively scans all subdirectories, parses all `.fir` files, and checks for
+exit codes.
 
 When run without an argument, it assumes that the Fir checkout is in `../fir`,
-and parses the files in the Fir's test directory.
+and parses all Fir files in the directory. Currently there are a few failures in
+`Tool/Format/tests`, caused by discrepancies between the reference
+implementation's parser and the compiler's parser. We'll fix those later, for
+now ignore those failures.
 
 `test.sh` should not report any parse failures.
 
