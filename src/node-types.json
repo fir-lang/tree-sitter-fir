@@ -87,6 +87,25 @@
     }
   },
   {
+    "type": "assoc_type_select",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "named_type",
+          "named": true
+        },
+        {
+          "type": "upper_id",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "bare_constructor_pattern",
     "named": true,
     "fields": {},
@@ -188,6 +207,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "assoc_type_select",
+          "named": true
+        },
         {
           "type": "backslash_lparen",
           "named": true
@@ -471,6 +494,10 @@
       "required": true,
       "types": [
         {
+          "type": "assoc_type_select",
+          "named": true
+        },
+        {
           "type": "fn_type",
           "named": true
         },
@@ -560,35 +587,15 @@
       "required": true,
       "types": [
         {
-          "type": "fn_type",
-          "named": true
-        },
-        {
           "type": "lbracket",
           "named": true
         },
         {
-          "type": "named_type",
-          "named": true
-        },
-        {
-          "type": "paren_type",
+          "type": "predicate",
           "named": true
         },
         {
           "type": "rbracket",
-          "named": true
-        },
-        {
-          "type": "record_type",
-          "named": true
-        },
-        {
-          "type": "type_variable",
-          "named": true
-        },
-        {
-          "type": "variant_type",
           "named": true
         }
       ]
@@ -842,6 +849,10 @@
       "required": true,
       "types": [
         {
+          "type": "assoc_type_select",
+          "named": true
+        },
+        {
           "type": "fn_type",
           "named": true
         },
@@ -1011,6 +1022,10 @@
       "required": true,
       "types": [
         {
+          "type": "assoc_type_select",
+          "named": true
+        },
+        {
           "type": "fn_type",
           "named": true
         },
@@ -1057,6 +1072,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "assoc_type_select",
+          "named": true
+        },
         {
           "type": "bare_constructor_pattern",
           "named": true
@@ -1220,6 +1239,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "assoc_type_select",
+          "named": true
+        },
         {
           "type": "context",
           "named": true
@@ -1459,6 +1482,10 @@
       "required": true,
       "types": [
         {
+          "type": "assoc_type_select",
+          "named": true
+        },
+        {
           "type": "context",
           "named": true
         },
@@ -1468,6 +1495,10 @@
         },
         {
           "type": "impl_function_declaration",
+          "named": true
+        },
+        {
+          "type": "impl_type_declaration",
           "named": true
         },
         {
@@ -1593,6 +1624,53 @@
     }
   },
   {
+    "type": "impl_type_declaration",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "assoc_type_select",
+          "named": true
+        },
+        {
+          "type": "fn_type",
+          "named": true
+        },
+        {
+          "type": "kw_type",
+          "named": true
+        },
+        {
+          "type": "named_type",
+          "named": true
+        },
+        {
+          "type": "paren_type",
+          "named": true
+        },
+        {
+          "type": "record_type",
+          "named": true
+        },
+        {
+          "type": "type_variable",
+          "named": true
+        },
+        {
+          "type": "upper_id",
+          "named": true
+        },
+        {
+          "type": "variant_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "import_declaration",
     "named": true,
     "fields": {},
@@ -1642,6 +1720,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "assoc_type_select",
+          "named": true
+        },
         {
           "type": "backslash_lparen",
           "named": true
@@ -1857,6 +1939,10 @@
       "required": true,
       "types": [
         {
+          "type": "assoc_type_select",
+          "named": true
+        },
+        {
           "type": "fn_type",
           "named": true
         },
@@ -1895,6 +1981,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "assoc_type_select",
+          "named": true
+        },
         {
           "type": "bare_constructor_pattern",
           "named": true
@@ -2312,6 +2402,10 @@
       "required": true,
       "types": [
         {
+          "type": "assoc_type_select",
+          "named": true
+        },
+        {
           "type": "fn_type",
           "named": true
         },
@@ -2406,6 +2500,10 @@
       "required": true,
       "types": [
         {
+          "type": "assoc_type_select",
+          "named": true
+        },
+        {
           "type": "fn_type",
           "named": true
         },
@@ -2467,6 +2565,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "assoc_type_select",
+          "named": true
+        },
         {
           "type": "fn_type",
           "named": true
@@ -2607,6 +2709,53 @@
         },
         {
           "type": "variable_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "predicate",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "assoc_type_select",
+          "named": true
+        },
+        {
+          "type": "fn_type",
+          "named": true
+        },
+        {
+          "type": "named_type",
+          "named": true
+        },
+        {
+          "type": "paren_type",
+          "named": true
+        },
+        {
+          "type": "record_type",
+          "named": true
+        },
+        {
+          "type": "type_app",
+          "named": true
+        },
+        {
+          "type": "type_variable",
+          "named": true
+        },
+        {
+          "type": "upper_id",
+          "named": true
+        },
+        {
+          "type": "variant_type",
           "named": true
         }
       ]
@@ -2788,6 +2937,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "assoc_type_select",
+          "named": true
+        },
         {
           "type": "fn_type",
           "named": true
@@ -3256,6 +3409,10 @@
           "named": true
         },
         {
+          "type": "trait_type_declaration",
+          "named": true
+        },
+        {
           "type": "upper_id",
           "named": true
         }
@@ -3346,6 +3503,76 @@
     }
   },
   {
+    "type": "trait_type_declaration",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "kw_type",
+          "named": true
+        },
+        {
+          "type": "upper_id",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "type_app",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "assoc_type_select",
+          "named": true
+        },
+        {
+          "type": "fn_type",
+          "named": true
+        },
+        {
+          "type": "lbracket",
+          "named": true
+        },
+        {
+          "type": "named_type",
+          "named": true
+        },
+        {
+          "type": "paren_type",
+          "named": true
+        },
+        {
+          "type": "rbracket",
+          "named": true
+        },
+        {
+          "type": "record_type",
+          "named": true
+        },
+        {
+          "type": "type_variable",
+          "named": true
+        },
+        {
+          "type": "upper_id",
+          "named": true
+        },
+        {
+          "type": "variant_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "type_arguments",
     "named": true,
     "fields": {},
@@ -3353,6 +3580,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "assoc_type_select",
+          "named": true
+        },
         {
           "type": "fn_type",
           "named": true
@@ -3637,6 +3868,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "assoc_type_select",
+          "named": true
+        },
         {
           "type": "fn_type",
           "named": true

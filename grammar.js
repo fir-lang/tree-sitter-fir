@@ -168,6 +168,7 @@ module.exports = grammar({
 
     _type: $ => choice(
       $.named_type,
+      $.assoc_type_select,
       $.type_variable,
       $.fn_type,
       $.record_type,
@@ -179,6 +180,9 @@ module.exports = grammar({
       $.upper_id,
       seq($.upper_id, $.lbracket, sep($._type, $._comma), $.rbracket),
     ),
+
+    // Associated type selection: Foo[t].A, Iterator[iter, exn].Item
+    assoc_type_select: $ => seq($.named_type, $._dot, $.upper_id),
 
     type_variable: $ => $.lower_id,
 
@@ -208,6 +212,7 @@ module.exports = grammar({
     // TypeNoFn: same as Type but without fn_type, used in return position
     _type_no_fn: $ => choice(
       $.named_type,
+      $.assoc_type_select,
       $.type_variable,
       $.record_type,
       $.variant_type,
@@ -246,7 +251,16 @@ module.exports = grammar({
 
     param: $ => seq($.lower_id, optional(seq($._colon, $._type))),
 
-    context: $ => seq($.lbracket, sep($._type, $._comma), $.rbracket),
+    context: $ => seq($.lbracket, sep($.predicate, $._comma), $.rbracket),
+
+    // Predicate in a context: Foo[t] or Foo[t].A = U64
+    predicate: $ => choice(
+      $.type_app,
+      seq($.type_app, $._dot, $.upper_id, $._eq, $._type),
+    ),
+
+    // Type application in predicates: Trait[args]
+    type_app: $ => seq($.upper_id, $.lbracket, sep($._type, $._comma), $.rbracket),
 
     // ==================== Statements ====================
 
@@ -512,13 +526,19 @@ module.exports = grammar({
       seq($.kw_trait, $.upper_id, $.lbracket, sep($.lower_id, $._comma), $.rbracket),
     ),
 
-    _trait_item: $ => $.trait_function_declaration,
+    _trait_item: $ => choice(
+      $.trait_function_declaration,
+      $.trait_type_declaration,
+    ),
 
     trait_function_declaration: $ => choice(
       seq($._fun_sig, $._colon, $._start_block, $.statements, $._end_block),
       seq(optional($.kw_prim), $._fun_sig, $._newline),
       seq($._fun_sig, $._colon, $._inline_expr, $._newline),
     ),
+
+    // Associated type declaration in trait: `type Item`
+    trait_type_declaration: $ => seq($.kw_type, $.upper_id, $._newline),
 
     // ==================== Impl declarations ====================
 
@@ -528,12 +548,18 @@ module.exports = grammar({
       seq($.kw_impl, optional($.context), $.upper_id, $.lbracket, sep($._type, $._comma), $.rbracket),
     ),
 
-    _impl_item: $ => $.impl_function_declaration,
+    _impl_item: $ => choice(
+      $.impl_function_declaration,
+      $.impl_type_declaration,
+    ),
 
     impl_function_declaration: $ => choice(
       seq($._fun_sig, $._colon, $._start_block, $.statements, $._end_block),
       seq(optional($.kw_prim), $._fun_sig, $._newline),
       seq($._fun_sig, $._colon, $._inline_expr, $._newline),
     ),
+
+    // Associated type definition in impl: `type A = U64`
+    impl_type_declaration: $ => seq($.kw_type, $.upper_id, $._eq, $._type, $._newline),
   },
 });
