@@ -147,6 +147,8 @@ module.exports = grammar({
     _type_decl_rhs: $ => choice(
       // Empty product
       $._newline,
+      // Type synonym: type Name = Type
+      seq($._eq, $._type, $._newline),
       // Sum type
       seq($._colon, $._start_block, $.constructor_list, $._end_block),
       // Product with fields

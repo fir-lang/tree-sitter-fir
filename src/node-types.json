@@ -3628,11 +3628,19 @@
       "required": true,
       "types": [
         {
+          "type": "assoc_type_select",
+          "named": true
+        },
+        {
           "type": "constructor_list",
           "named": true
         },
         {
           "type": "field",
+          "named": true
+        },
+        {
+          "type": "fn_type",
           "named": true
         },
         {
@@ -3656,6 +3664,18 @@
           "named": true
         },
         {
+          "type": "named_type",
+          "named": true
+        },
+        {
+          "type": "paren_type",
+          "named": true
+        },
+        {
+          "type": "record_type",
+          "named": true
+        },
+        {
           "type": "rparen",
           "named": true
         },
@@ -3664,7 +3684,15 @@
           "named": true
         },
         {
+          "type": "type_variable",
+          "named": true
+        },
+        {
           "type": "upper_id",
+          "named": true
+        },
+        {
+          "type": "variant_type",
           "named": true
         }
       ]
