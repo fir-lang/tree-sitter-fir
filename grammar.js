@@ -151,17 +151,23 @@ module.exports = grammar({
       seq($._eq, $._type, $._newline),
       // Sum type
       seq($._colon, $._start_block, $.constructor_list, $._end_block),
-      // Product with fields
-      seq($.lparen, sep($.field, $._comma), $.rparen, $._newline),
+      // Product with fields (optional row extension: ..r)
+      seq($.lparen, sep($.field, $._comma), optional($.row_extension), $.rparen, $._newline),
     ),
 
     type_params: $ => seq(sep($.lower_id, $._comma), $.rbracket),
 
-    constructor_list: $ => repeat1($.constructor_declaration),
+    constructor_list: $ => choice(
+      seq(repeat1($.constructor_declaration), optional($.row_extension_line)),
+      $.row_extension_line,
+    ),
+
+    // Row extension in sum types: ..r (on its own line)
+    row_extension_line: $ => seq($._dotdot, $.lower_id, $._newline),
 
     constructor_declaration: $ => choice(
       seq($.upper_id, $._newline),
-      seq($.upper_id, $.lparen, sep($.field, $._comma), $.rparen, $._newline),
+      seq($.upper_id, $.lparen, sep($.field, $._comma), optional($.row_extension), $.rparen, $._newline),
     ),
 
     field: $ => seq(optional(seq($.lower_id, $._colon)), $._type),
