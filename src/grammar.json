@@ -396,7 +396,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "lower_id"
+          "name": "_type_no_fn"
         },
         {
           "type": "SYMBOL",
@@ -1141,7 +1141,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "lower_id"
+          "name": "_type_no_fn"
         }
       ]
     },

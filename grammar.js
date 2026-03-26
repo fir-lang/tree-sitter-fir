@@ -163,7 +163,7 @@ module.exports = grammar({
     ),
 
     // Row extension in sum types: ..r (on its own line)
-    row_extension_line: $ => seq($._dotdot, $.lower_id, $._newline),
+    row_extension_line: $ => seq($._dotdot, $._type_no_fn, $._newline),
 
     constructor_declaration: $ => choice(
       seq($.upper_id, $._newline),
@@ -215,7 +215,7 @@ module.exports = grammar({
 
     record_type_field: $ => seq($.lower_id, $._colon, $._type),
 
-    row_extension: $ => seq($._dotdot, $.lower_id),
+    row_extension: $ => seq($._dotdot, $._type_no_fn),
 
     // TypeNoFn: same as Type but without fn_type, used in return position
     _type_no_fn: $ => choice(

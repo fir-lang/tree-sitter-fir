@@ -3064,7 +3064,27 @@
       "required": true,
       "types": [
         {
-          "type": "lower_id",
+          "type": "assoc_type_select",
+          "named": true
+        },
+        {
+          "type": "named_type",
+          "named": true
+        },
+        {
+          "type": "paren_type",
+          "named": true
+        },
+        {
+          "type": "record_type",
+          "named": true
+        },
+        {
+          "type": "type_variable",
+          "named": true
+        },
+        {
+          "type": "variant_type",
           "named": true
         }
       ]
@@ -3079,7 +3099,27 @@
       "required": true,
       "types": [
         {
-          "type": "lower_id",
+          "type": "assoc_type_select",
+          "named": true
+        },
+        {
+          "type": "named_type",
+          "named": true
+        },
+        {
+          "type": "paren_type",
+          "named": true
+        },
+        {
+          "type": "record_type",
+          "named": true
+        },
+        {
+          "type": "type_variable",
+          "named": true
+        },
+        {
+          "type": "variant_type",
           "named": true
         }
       ]
