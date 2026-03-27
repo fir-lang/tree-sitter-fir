@@ -2255,123 +2255,61 @@
       "type": "PREC",
       "value": 0,
       "content": {
-        "type": "CHOICE",
+        "type": "SEQ",
         "members": [
           {
-            "type": "SEQ",
+            "type": "SYMBOL",
+            "name": "lparen"
+          },
+          {
+            "type": "REPEAT",
+            "content": {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "record_field_expression"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_comma"
+                }
+              ]
+            }
+          },
+          {
+            "type": "CHOICE",
             "members": [
-              {
-                "type": "SYMBOL",
-                "name": "lparen"
-              },
               {
                 "type": "CHOICE",
                 "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "record_field_expression"
+                  },
                   {
                     "type": "SEQ",
                     "members": [
                       {
                         "type": "SYMBOL",
-                        "name": "record_field_expression"
+                        "name": "_dotdot"
                       },
                       {
-                        "type": "REPEAT",
-                        "content": {
-                          "type": "SEQ",
-                          "members": [
-                            {
-                              "type": "SYMBOL",
-                              "name": "_comma"
-                            },
-                            {
-                              "type": "SYMBOL",
-                              "name": "record_field_expression"
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "type": "CHOICE",
-                        "members": [
-                          {
-                            "type": "SYMBOL",
-                            "name": "_comma"
-                          },
-                          {
-                            "type": "BLANK"
-                          }
-                        ]
+                        "type": "SYMBOL",
+                        "name": "_inline_expr"
                       }
                     ]
-                  },
-                  {
-                    "type": "BLANK"
                   }
                 ]
               },
               {
-                "type": "SYMBOL",
-                "name": "rparen"
+                "type": "BLANK"
               }
             ]
           },
           {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "lparen"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_dotdot"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_inline_expr"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "rparen"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "lparen"
-              },
-              {
-                "type": "REPEAT1",
-                "content": {
-                  "type": "SEQ",
-                  "members": [
-                    {
-                      "type": "SYMBOL",
-                      "name": "record_field_expression"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "_comma"
-                    }
-                  ]
-                }
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_dotdot"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_inline_expr"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "rparen"
-              }
-            ]
+            "type": "SYMBOL",
+            "name": "rparen"
           }
         ]
       }
@@ -2454,40 +2392,41 @@
             "name": "lparen"
           },
           {
+            "type": "REPEAT",
+            "content": {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "call_argument"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_comma"
+                }
+              ]
+            }
+          },
+          {
             "type": "CHOICE",
             "members": [
               {
-                "type": "SEQ",
+                "type": "CHOICE",
                 "members": [
                   {
                     "type": "SYMBOL",
                     "name": "call_argument"
                   },
                   {
-                    "type": "REPEAT",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "SYMBOL",
-                          "name": "_comma"
-                        },
-                        {
-                          "type": "SYMBOL",
-                          "name": "call_argument"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "type": "CHOICE",
+                    "type": "SEQ",
                     "members": [
                       {
                         "type": "SYMBOL",
-                        "name": "_comma"
+                        "name": "_dotdot"
                       },
                       {
-                        "type": "BLANK"
+                        "type": "SYMBOL",
+                        "name": "_inline_expr"
                       }
                     ]
                   }
@@ -4733,9 +4672,6 @@
     [
       "constructor_expression",
       "sequence_expression"
-    ],
-    [
-      "record_expression"
     ]
   ],
   "precedences": [],

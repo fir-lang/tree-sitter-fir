@@ -19,7 +19,6 @@ module.exports = grammar({
 
   conflicts: $ => [
     [$.constructor_expression, $.sequence_expression],
-    [$.record_expression],
   ],
 
   externals: $ => [
@@ -359,10 +358,11 @@ module.exports = grammar({
 
     parenthesized_expression: $ => prec(0, seq($.lparen, $._expr, $.rparen)),
 
-    record_expression: $ => prec(0, choice(
-      seq($.lparen, sep($.record_field_expression, $._comma), $.rparen),
-      seq($.lparen, $._dotdot, $._inline_expr, $.rparen),
-      seq($.lparen, repeat1(seq($.record_field_expression, $._comma)), $._dotdot, $._inline_expr, $.rparen),
+    record_expression: $ => prec(0, seq(
+      $.lparen,
+      repeat(seq($.record_field_expression, $._comma)),
+      optional(choice($.record_field_expression, seq($._dotdot, $._inline_expr))),
+      $.rparen,
     )),
 
     record_field_expression: $ => seq($.lower_id, $._eq, $._expr),
@@ -375,7 +375,12 @@ module.exports = grammar({
 
     string_interpolation: $ => seq($.begin_interpolation, $._expr, $.end_interpolation),
 
-    call_expression: $ => prec.left(15, seq($._inline_expr, $.lparen, sep($.call_argument, $._comma), $.rparen)),
+    call_expression: $ => prec.left(15, seq(
+      $._inline_expr, $.lparen,
+      repeat(seq($.call_argument, $._comma)),
+      optional(choice($.call_argument, seq($._dotdot, $._inline_expr))),
+      $.rparen,
+    )),
 
     field_access_expression: $ => prec.left(15, seq($._inline_expr, $._dot, $.lower_id, optional($.type_arguments))),
 
