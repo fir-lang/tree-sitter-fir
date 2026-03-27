@@ -19,6 +19,7 @@ module.exports = grammar({
 
   conflicts: $ => [
     [$.constructor_expression, $.sequence_expression],
+    [$.record_expression],
   ],
 
   externals: $ => [
@@ -263,12 +264,9 @@ module.exports = grammar({
 
     // Predicate in a context: Foo[t] or Foo[t].A = U64
     predicate: $ => choice(
-      $.type_app,
-      seq($.type_app, $._dot, $.upper_id, $._eq, $._type),
+      $.named_type,
+      seq($.named_type, $._dot, $.upper_id, $._eq, $._type),
     ),
-
-    // Type application in predicates: Trait[args]
-    type_app: $ => seq($.upper_id, $.lbracket, sep($._type, $._comma), $.rbracket),
 
     // ==================== Statements ====================
 
@@ -361,7 +359,11 @@ module.exports = grammar({
 
     parenthesized_expression: $ => prec(0, seq($.lparen, $._expr, $.rparen)),
 
-    record_expression: $ => prec(0, seq($.lparen, sep($.record_field_expression, $._comma), $.rparen)),
+    record_expression: $ => prec(0, choice(
+      seq($.lparen, sep($.record_field_expression, $._comma), $.rparen),
+      seq($.lparen, $._dotdot, $._inline_expr, $.rparen),
+      seq($.lparen, repeat1(seq($.record_field_expression, $._comma)), $._dotdot, $._inline_expr, $.rparen),
+    )),
 
     record_field_expression: $ => seq($.lower_id, $._eq, $._expr),
 

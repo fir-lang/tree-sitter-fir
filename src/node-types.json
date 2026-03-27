@@ -2751,10 +2751,6 @@
           "named": true
         },
         {
-          "type": "type_app",
-          "named": true
-        },
-        {
           "type": "type_variable",
           "named": true
         },
@@ -2778,7 +2774,47 @@
       "required": true,
       "types": [
         {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "call_expression",
+          "named": true
+        },
+        {
+          "type": "char_literal",
+          "named": true
+        },
+        {
+          "type": "constructor_expression",
+          "named": true
+        },
+        {
+          "type": "field_access_expression",
+          "named": true
+        },
+        {
+          "type": "inline_lambda",
+          "named": true
+        },
+        {
+          "type": "int_literal",
+          "named": true
+        },
+        {
+          "type": "is_expression",
+          "named": true
+        },
+        {
           "type": "lparen",
+          "named": true
+        },
+        {
+          "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "record_expression",
           "named": true
         },
         {
@@ -2786,7 +2822,27 @@
           "named": true
         },
         {
+          "type": "return_expression",
+          "named": true
+        },
+        {
           "type": "rparen",
+          "named": true
+        },
+        {
+          "type": "sequence_expression",
+          "named": true
+        },
+        {
+          "type": "string_expression",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        },
+        {
+          "type": "variable_expression",
           "named": true
         }
       ]
@@ -3579,57 +3635,6 @@
         },
         {
           "type": "upper_id",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "type_app",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "assoc_type_select",
-          "named": true
-        },
-        {
-          "type": "fn_type",
-          "named": true
-        },
-        {
-          "type": "lbracket",
-          "named": true
-        },
-        {
-          "type": "named_type",
-          "named": true
-        },
-        {
-          "type": "paren_type",
-          "named": true
-        },
-        {
-          "type": "rbracket",
-          "named": true
-        },
-        {
-          "type": "record_type",
-          "named": true
-        },
-        {
-          "type": "type_variable",
-          "named": true
-        },
-        {
-          "type": "upper_id",
-          "named": true
-        },
-        {
-          "type": "variant_type",
           "named": true
         }
       ]
