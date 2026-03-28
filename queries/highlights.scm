@@ -80,6 +80,8 @@
 
 (variable_pattern (lower_id) @variable)
 
+(rest_pattern (lower_id) @variable)
+
 ; Fields and properties
 (field_access_expression (lower_id) @property)
 

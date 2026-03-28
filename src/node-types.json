@@ -576,6 +576,10 @@
           "named": true
         },
         {
+          "type": "rest_pattern",
+          "named": true
+        },
+        {
           "type": "rparen",
           "named": true
         },
@@ -2956,6 +2960,10 @@
           "named": true
         },
         {
+          "type": "rest_pattern",
+          "named": true
+        },
+        {
           "type": "rparen",
           "named": true
         }
@@ -3031,6 +3039,21 @@
         },
         {
           "type": "variant_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "rest_pattern",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "lower_id",
           "named": true
         }
       ]

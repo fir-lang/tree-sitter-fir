@@ -512,10 +512,14 @@ module.exports = grammar({
 
     or_pattern: $ => prec.right(11, seq($._pattern, $._pipe, $._pattern)),
 
+    rest_pattern: $ => seq($._dotdot, $.lower_id),
+
     _field_pats: $ => choice(
       $._dotdot,
+      $.rest_pattern,
       seq(sep1($.field_pattern, $._comma), optional($._comma)),  // allow trailing comma
       seq(sep1($.field_pattern, $._comma), $._comma, $._dotdot),
+      seq(sep1($.field_pattern, $._comma), $._comma, $.rest_pattern),
     ),
 
     field_pattern: $ => choice(
