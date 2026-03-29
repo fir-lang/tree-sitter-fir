@@ -2743,6 +2743,10 @@
           "named": true
         },
         {
+          "type": "lower_id",
+          "named": true
+        },
+        {
           "type": "named_type",
           "named": true
         },
@@ -3539,19 +3543,15 @@
           "named": true
         },
         {
-          "type": "lower_id",
-          "named": true
-        },
-        {
-          "type": "rbracket",
-          "named": true
-        },
-        {
           "type": "trait_function_declaration",
           "named": true
         },
         {
           "type": "trait_type_declaration",
+          "named": true
+        },
+        {
+          "type": "type_params",
           "named": true
         },
         {
@@ -3653,11 +3653,39 @@
       "required": true,
       "types": [
         {
+          "type": "assoc_type_select",
+          "named": true
+        },
+        {
+          "type": "fn_type",
+          "named": true
+        },
+        {
           "type": "kw_type",
           "named": true
         },
         {
+          "type": "named_type",
+          "named": true
+        },
+        {
+          "type": "paren_type",
+          "named": true
+        },
+        {
+          "type": "record_type",
+          "named": true
+        },
+        {
+          "type": "type_variable",
+          "named": true
+        },
+        {
           "type": "upper_id",
+          "named": true
+        },
+        {
+          "type": "variant_type",
           "named": true
         }
       ]
@@ -3794,6 +3822,49 @@
     }
   },
   {
+    "type": "type_param",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "assoc_type_select",
+          "named": true
+        },
+        {
+          "type": "fn_type",
+          "named": true
+        },
+        {
+          "type": "lower_id",
+          "named": true
+        },
+        {
+          "type": "named_type",
+          "named": true
+        },
+        {
+          "type": "paren_type",
+          "named": true
+        },
+        {
+          "type": "record_type",
+          "named": true
+        },
+        {
+          "type": "type_variable",
+          "named": true
+        },
+        {
+          "type": "variant_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "type_params",
     "named": true,
     "fields": {},
@@ -3802,11 +3873,11 @@
       "required": true,
       "types": [
         {
-          "type": "lower_id",
+          "type": "rbracket",
           "named": true
         },
         {
-          "type": "rbracket",
+          "type": "type_param",
           "named": true
         }
       ]

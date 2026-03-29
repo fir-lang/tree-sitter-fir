@@ -155,7 +155,9 @@ module.exports = grammar({
       seq($.lparen, sep($.field, $._comma), optional($.row_extension), $.rparen, $._newline),
     ),
 
-    type_params: $ => seq(sep($.lower_id, $._comma), $.rbracket),
+    type_param: $ => seq($.lower_id, optional(seq($._colon, $._type))),
+
+    type_params: $ => seq(sep($.type_param, $._comma), $.rbracket),
 
     constructor_list: $ => choice(
       seq(repeat1($.constructor_declaration), optional($.row_extension_line)),
@@ -261,10 +263,11 @@ module.exports = grammar({
 
     context: $ => seq($.lbracket, sep($.predicate, $._comma), $.rbracket),
 
-    // Predicate in a context: Foo[t] or Foo[t].A = U64
+    // Predicate in a context: Foo[t], Foo[t].A = U64, or a: Row[Rec] (kind annotation)
     predicate: $ => choice(
       $.named_type,
       seq($.named_type, $._dot, $.upper_id, $._eq, $._type),
+      seq($.lower_id, optional(seq($._colon, $._type))),
     ),
 
     // ==================== Statements ====================
@@ -540,9 +543,9 @@ module.exports = grammar({
     // ==================== Trait declarations ====================
 
     trait_declaration: $ => choice(
-      seq($.kw_trait, $.upper_id, $.lbracket, sep($.lower_id, $._comma), $.rbracket, $._colon,
+      seq($.kw_trait, $.upper_id, $.lbracket, $.type_params, $._colon,
           $._start_block, repeat1($._trait_item), $._end_block),
-      seq($.kw_trait, $.upper_id, $.lbracket, sep($.lower_id, $._comma), $.rbracket),
+      seq($.kw_trait, $.upper_id, $.lbracket, $.type_params),
     ),
 
     _trait_item: $ => choice(
@@ -556,8 +559,8 @@ module.exports = grammar({
       seq($._fun_sig, $._colon, $._inline_expr, $._newline),
     ),
 
-    // Associated type declaration in trait: `type Item`
-    trait_type_declaration: $ => seq($.kw_type, $.upper_id, $._newline),
+    // Associated type declaration in trait: `type Item` or `type Item: Row[Rec]`
+    trait_type_declaration: $ => seq($.kw_type, $.upper_id, optional(seq($._colon, $._type)), $._newline),
 
     // ==================== Impl declarations ====================
 
