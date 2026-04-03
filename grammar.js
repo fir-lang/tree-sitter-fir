@@ -559,8 +559,8 @@ module.exports = grammar({
       seq($._fun_sig, $._colon, $._inline_expr, $._newline),
     ),
 
-    // Associated type declaration in trait: `type Item` or `type Item: Row[Rec]`
-    trait_type_declaration: $ => seq($.kw_type, $.upper_id, optional(seq($._colon, $._type)), $._newline),
+    // Associated type declaration in trait: `type Item`, `type Item: Row[Rec]`, or `type Item = U32`
+    trait_type_declaration: $ => seq($.kw_type, $.upper_id, optional(seq($._colon, $._type)), optional(seq($._eq, $._type)), $._newline),
 
     // ==================== Impl declarations ====================
 
