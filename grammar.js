@@ -534,11 +534,31 @@ module.exports = grammar({
 
     import_declaration: $ => seq(
       $.kw_import, $.lbracket,
-      sep1($.import_path, $._comma), optional($._comma),
+      sep($.import_item, $._comma),
       $.rbracket, $._newline,
     ),
 
-    import_path: $ => sep1($.upper_id, $._slash),
+    import_item: $ => seq(
+      $.import_path,
+      optional(seq($.kw_as, $.upper_id)),
+    ),
+
+    // Path: UpperId ("/" UpperId)* optionally followed by "/*" or "/[names]"
+    import_path: $ => seq(
+      sep1($.upper_id, $._slash),
+      optional(seq($._slash, choice($._star, $.import_name_list))),
+    ),
+
+    import_name_list: $ => seq(
+      $.lbracket,
+      sep($.import_name, $._comma),
+      $.rbracket,
+    ),
+
+    import_name: $ => choice(
+      seq($.lower_id, optional(seq($.kw_as, $.lower_id))),
+      seq($.upper_id, optional(seq($.kw_as, $.upper_id))),
+    ),
 
     // ==================== Trait declarations ====================
 

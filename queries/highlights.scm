@@ -64,6 +64,12 @@
 
 (import_path (upper_id) @type)
 
+(import_item (upper_id) @type)
+
+(import_name (upper_id) @type)
+
+(import_name (lower_id) @function)
+
 ; ==================== Constructors ====================
 
 (constructor_declaration (upper_id) @constructor)

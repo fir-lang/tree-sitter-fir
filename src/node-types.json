@@ -1691,11 +1691,80 @@
       "required": true,
       "types": [
         {
-          "type": "import_path",
+          "type": "import_item",
           "named": true
         },
         {
           "type": "kw_import",
+          "named": true
+        },
+        {
+          "type": "lbracket",
+          "named": true
+        },
+        {
+          "type": "rbracket",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "import_item",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "import_path",
+          "named": true
+        },
+        {
+          "type": "kw_as",
+          "named": true
+        },
+        {
+          "type": "upper_id",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "import_name",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "kw_as",
+          "named": true
+        },
+        {
+          "type": "lower_id",
+          "named": true
+        },
+        {
+          "type": "upper_id",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "import_name_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "import_name",
           "named": true
         },
         {
@@ -1717,6 +1786,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "import_name_list",
+          "named": true
+        },
         {
           "type": "upper_id",
           "named": true
@@ -4247,6 +4320,10 @@
   },
   {
     "type": "kw_and",
+    "named": true
+  },
+  {
+    "type": "kw_as",
     "named": true
   },
   {
