@@ -597,12 +597,41 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "upper_id"
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "module_prefix"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
+            {
+              "type": "SYMBOL",
+              "name": "upper_id"
+            }
+          ]
         },
         {
           "type": "SEQ",
           "members": [
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "module_prefix"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
             {
               "type": "SYMBOL",
               "name": "upper_id"
@@ -1078,12 +1107,41 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "upper_id"
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "module_prefix"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
+            {
+              "type": "SYMBOL",
+              "name": "upper_id"
+            }
+          ]
         },
         {
           "type": "SEQ",
           "members": [
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "module_prefix"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
             {
               "type": "SYMBOL",
               "name": "upper_id"
@@ -2150,6 +2208,18 @@
         "type": "SEQ",
         "members": [
           {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "module_prefix"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          },
+          {
             "type": "SYMBOL",
             "name": "lower_id"
           },
@@ -2175,12 +2245,41 @@
         "type": "CHOICE",
         "members": [
           {
-            "type": "SYMBOL",
-            "name": "upper_id"
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "module_prefix"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              },
+              {
+                "type": "SYMBOL",
+                "name": "upper_id"
+              }
+            ]
           },
           {
             "type": "SEQ",
             "members": [
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "module_prefix"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              },
               {
                 "type": "SYMBOL",
                 "name": "upper_id"
@@ -2224,6 +2323,18 @@
             "type": "SEQ",
             "members": [
               {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "module_prefix"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              },
+              {
                 "type": "SYMBOL",
                 "name": "upper_id"
               },
@@ -2240,6 +2351,18 @@
           {
             "type": "SEQ",
             "members": [
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "module_prefix"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              },
               {
                 "type": "SYMBOL",
                 "name": "upper_id"
@@ -2604,6 +2727,18 @@
           {
             "type": "SEQ",
             "members": [
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "module_prefix"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              },
               {
                 "type": "SYMBOL",
                 "name": "upper_id"
@@ -3737,12 +3872,41 @@
         "type": "CHOICE",
         "members": [
           {
-            "type": "SYMBOL",
-            "name": "upper_id"
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "module_prefix"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              },
+              {
+                "type": "SYMBOL",
+                "name": "upper_id"
+              }
+            ]
           },
           {
             "type": "SEQ",
             "members": [
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "module_prefix"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              },
               {
                 "type": "SYMBOL",
                 "name": "upper_id"
@@ -3767,6 +3931,18 @@
           "type": "SEQ",
           "members": [
             {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "module_prefix"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
+            {
               "type": "SYMBOL",
               "name": "upper_id"
             },
@@ -3788,6 +3964,18 @@
           "type": "SEQ",
           "members": [
             {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "module_prefix"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
+            {
               "type": "SYMBOL",
               "name": "upper_id"
             },
@@ -3804,6 +3992,18 @@
         {
           "type": "SEQ",
           "members": [
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "module_prefix"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
             {
               "type": "SYMBOL",
               "name": "upper_id"
@@ -3833,6 +4033,18 @@
         {
           "type": "SEQ",
           "members": [
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "module_prefix"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
             {
               "type": "SYMBOL",
               "name": "upper_id"
@@ -4958,6 +5170,10 @@
     {
       "type": "SYMBOL",
       "name": "lower_id"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "module_prefix"
     },
     {
       "type": "SYMBOL",

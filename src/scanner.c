@@ -11,9 +11,10 @@ enum TokenType {
     END_BLOCK,    // emitted when an indented block ends (DEDENT)
     NEWLINE,
 
-    // Identifiers (3-5)
+    // Identifiers (3-6)
     UPPER_ID,
     LOWER_ID,
+    MODULE_PREFIX,  // (UpperId '/')+ — e.g. "Fir/", "M1/M2/"
     LABEL,
 
     // Literals (10-11)
@@ -276,9 +277,35 @@ static enum TokenType lookup_keyword(const char *word, int len) {
 
 // ==================== Token scanning functions ====================
 
+// After consuming an UpperId (mark_end already at end of that id), try to
+// extend into a ModulePrefix by consuming `/ UpperId /` segments. Returns
+// true and updates mark_end to the final `/` if at least one `/` was
+// consumed. The UpperId (or later segments) we peeked past without a
+// trailing `/` is left as lookahead — tree-sitter re-reads from mark_end.
+static bool try_module_prefix_tail(TSLexer *lexer, const bool *valid) {
+    if (!valid[MODULE_PREFIX]) return false;
+    if (lexer->lookahead != '/') return false;
+    advance(lexer); // consume '/'
+    lexer->mark_end(lexer);
+
+    // Greedily consume additional `UpperId /` segments.
+    while (lexer->lookahead == '_' || is_upper(lexer->lookahead)) {
+        while (lexer->lookahead == '_') advance(lexer);
+        if (!is_upper(lexer->lookahead)) break;
+        advance(lexer);
+        while (is_id_char(lexer->lookahead)) advance(lexer);
+
+        if (lexer->lookahead != '/') break;
+        advance(lexer);
+        lexer->mark_end(lexer);
+    }
+
+    return true;
+}
+
 // Scan an upper-case identifier.
 // Assumes lookahead is '_' or uppercase letter.
-// Returns the token type (UPPER_ID or KW_UPPER_FN).
+// Returns the token type (UPPER_ID, KW_UPPER_FN, or MODULE_PREFIX).
 static enum TokenType scan_upper_id(TSLexer *lexer, const bool *valid) {
     // Consume _*[A-Z][A-Za-z0-9_]*
     char word[64];
@@ -290,6 +317,11 @@ static enum TokenType scan_upper_id(TSLexer *lexer, const bool *valid) {
     word[len] = '\0';
 
     lexer->mark_end(lexer);
+
+    // If followed immediately by '/', try to scan a module prefix instead.
+    if (try_module_prefix_tail(lexer, valid)) {
+        return MODULE_PREFIX;
+    }
 
     // Check for "Fn" keyword
     if (len == 2 && word[0] == 'F' && word[1] == 'n') {
@@ -822,6 +854,11 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid) {
                 advance(lexer);
                 while (is_id_char(lexer->lookahead)) advance(lexer);
                 lexer->mark_end(lexer);
+
+                if (try_module_prefix_tail(lexer, valid)) {
+                    lexer->result_symbol = MODULE_PREFIX;
+                    return true;
+                }
 
                 // Check for "Fn" keyword
                 // (unlikely with leading underscore, but consistent)

@@ -48,6 +48,10 @@
 
 (block_comment) @comment
 
+; ==================== Module prefixes ====================
+
+(module_prefix) @namespace
+
 ; ==================== Types ====================
 
 (named_type (upper_id) @type)

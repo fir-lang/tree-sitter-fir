@@ -114,6 +114,10 @@
       "required": true,
       "types": [
         {
+          "type": "module_prefix",
+          "named": true
+        },
+        {
           "type": "upper_id",
           "named": true
         }
@@ -510,6 +514,10 @@
           "named": true
         },
         {
+          "type": "module_prefix",
+          "named": true
+        },
+        {
           "type": "named_type",
           "named": true
         },
@@ -573,6 +581,10 @@
         },
         {
           "type": "lparen",
+          "named": true
+        },
+        {
+          "type": "module_prefix",
           "named": true
         },
         {
@@ -2499,6 +2511,10 @@
           "named": true
         },
         {
+          "type": "module_prefix",
+          "named": true
+        },
+        {
           "type": "named_type",
           "named": true
         },
@@ -3365,6 +3381,10 @@
           "named": true
         },
         {
+          "type": "module_prefix",
+          "named": true
+        },
+        {
           "type": "rbracket",
           "named": true
         },
@@ -4059,6 +4079,10 @@
           "named": true
         },
         {
+          "type": "module_prefix",
+          "named": true
+        },
+        {
           "type": "type_arguments",
           "named": true
         }
@@ -4149,6 +4173,10 @@
         },
         {
           "type": "lbracket",
+          "named": true
+        },
+        {
+          "type": "module_prefix",
           "named": true
         },
         {
@@ -4441,6 +4469,10 @@
   },
   {
     "type": "lparen",
+    "named": true
+  },
+  {
+    "type": "module_prefix",
     "named": true
   },
   {
