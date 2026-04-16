@@ -48,6 +48,10 @@
 
 (block_comment) @comment
 
+; ==================== Attributes ====================
+
+(attribute) @attribute
+
 ; ==================== Module prefixes ====================
 
 (module_prefix) @namespace

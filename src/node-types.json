@@ -106,6 +106,85 @@
     }
   },
   {
+    "type": "attribute",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "call_expression",
+          "named": true
+        },
+        {
+          "type": "char_literal",
+          "named": true
+        },
+        {
+          "type": "constructor_expression",
+          "named": true
+        },
+        {
+          "type": "field_access_expression",
+          "named": true
+        },
+        {
+          "type": "hash_lbracket",
+          "named": true
+        },
+        {
+          "type": "inline_lambda",
+          "named": true
+        },
+        {
+          "type": "int_literal",
+          "named": true
+        },
+        {
+          "type": "is_expression",
+          "named": true
+        },
+        {
+          "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "rbracket",
+          "named": true
+        },
+        {
+          "type": "record_expression",
+          "named": true
+        },
+        {
+          "type": "return_expression",
+          "named": true
+        },
+        {
+          "type": "sequence_expression",
+          "named": true
+        },
+        {
+          "type": "string_expression",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        },
+        {
+          "type": "variable_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "bare_constructor_pattern",
     "named": true,
     "fields": {},
@@ -1702,6 +1781,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "attribute",
+          "named": true
+        },
         {
           "type": "import_item",
           "named": true
@@ -3844,6 +3927,10 @@
           "named": true
         },
         {
+          "type": "attribute",
+          "named": true
+        },
+        {
           "type": "constructor_list",
           "named": true
         },
@@ -4340,6 +4427,10 @@
   },
   {
     "type": "end_str",
+    "named": true
+  },
+  {
+    "type": "hash_lbracket",
     "named": true
   },
   {

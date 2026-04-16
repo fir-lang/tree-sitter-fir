@@ -40,6 +40,7 @@ enum TokenType {
     LBRACE,
     RBRACE,
     BACKSLASH_LPAREN,
+    HASH_LBRACKET,  // #[ — start of an attribute
 
     // Punctuation (26-33)
     COLON,
@@ -657,10 +658,16 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid) {
         return false;
     }
 
-    // Comments
+    // Comments and attribute start
     if (c == '#') {
         lexer->mark_end(lexer);
         advance(lexer);
+        if (lexer->lookahead == '[' && valid[HASH_LBRACKET]) {
+            advance(lexer);
+            lexer->mark_end(lexer);
+            lexer->result_symbol = HASH_LBRACKET;
+            return true;
+        }
         if (lexer->lookahead == '|') {
             // Block comment
             if (valid[BLOCK_COMMENT]) {

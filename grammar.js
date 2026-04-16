@@ -56,6 +56,7 @@ module.exports = grammar({
     $.lbrace,           // {
     $.rbrace,           // }
     $.backslash_lparen,  // \(
+    $.hash_lbracket,    // #[ (start of attribute)
 
     // Punctuation (27-33)
     $._colon,           // :
@@ -136,13 +137,21 @@ module.exports = grammar({
 
     type_declaration: $ => choice(
       // [value] type Name TypeDeclRhs
-      seq(optional($.kw_value), $.kw_type, $.upper_id, $._type_decl_rhs),
+      seq(optional($.attribute), optional($.kw_value), $.kw_type, $.upper_id, $._type_decl_rhs),
       // [value] type Name[TypeParams] TypeDeclRhs
-      seq(optional($.kw_value), $.kw_type, $.upper_id, $.lbracket, $.type_params, $._type_decl_rhs),
+      seq(optional($.attribute), optional($.kw_value), $.kw_type, $.upper_id, $.lbracket, $.type_params, $._type_decl_rhs),
       // prim type Name NEWLINE
-      seq($.kw_prim, $.kw_type, $.upper_id, $._newline),
+      seq(optional($.attribute), $.kw_prim, $.kw_type, $.upper_id, $._newline),
       // prim type Name[TypeParams] NEWLINE
-      seq($.kw_prim, $.kw_type, $.upper_id, $.lbracket, $.type_params, $._newline),
+      seq(optional($.attribute), $.kw_prim, $.kw_type, $.upper_id, $.lbracket, $.type_params, $._newline),
+    ),
+
+    attribute: $ => seq(
+      $.hash_lbracket,
+      $._inline_expr,
+      optional(seq($._eq, $._inline_expr)),
+      $.rbracket,
+      $._newline,
     ),
 
     _type_decl_rhs: $ => choice(
@@ -534,6 +543,7 @@ module.exports = grammar({
     // ==================== Import declarations ====================
 
     import_declaration: $ => seq(
+      optional($.attribute),
       $.kw_import, $.lbracket,
       sep($.import_item, $._comma),
       $.rbracket, $._newline,
