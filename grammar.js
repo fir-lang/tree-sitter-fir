@@ -358,6 +358,7 @@ module.exports = grammar({
       $.if_expression,
       $.do_expression,
       $.block_lambda,
+      $.return_block_expression,
     ),
 
     variable_expression: $ => prec(0, seq(optional($.module_prefix), $.lower_id, optional($.type_arguments))),
@@ -435,6 +436,8 @@ module.exports = grammar({
     is_expression: $ => prec.left(10, seq($._inline_expr, $.kw_is, $._pattern)),
 
     return_expression: $ => prec.right(13, seq($.kw_return, optional($._inline_expr))),
+
+    return_block_expression: $ => seq($.kw_return, $._block_expr),
 
     inline_lambda: $ => prec.right(0, seq(
       $.backslash_lparen, sep($.lambda_param, $._comma), $.rparen,
