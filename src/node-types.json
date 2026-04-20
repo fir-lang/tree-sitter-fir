@@ -197,11 +197,47 @@
       "required": true,
       "types": [
         {
+          "type": "assoc_type_select",
+          "named": true
+        },
+        {
+          "type": "fn_type",
+          "named": true
+        },
+        {
+          "type": "lbracket",
+          "named": true
+        },
+        {
           "type": "module_prefix",
           "named": true
         },
         {
+          "type": "named_type",
+          "named": true
+        },
+        {
+          "type": "paren_type",
+          "named": true
+        },
+        {
+          "type": "rbracket",
+          "named": true
+        },
+        {
+          "type": "record_type",
+          "named": true
+        },
+        {
+          "type": "type_variable",
+          "named": true
+        },
+        {
           "type": "upper_id",
+          "named": true
+        },
+        {
+          "type": "variant_type",
           "named": true
         }
       ]
@@ -663,7 +699,19 @@
       "required": true,
       "types": [
         {
+          "type": "assoc_type_select",
+          "named": true
+        },
+        {
           "type": "field_pattern",
+          "named": true
+        },
+        {
+          "type": "fn_type",
+          "named": true
+        },
+        {
+          "type": "lbracket",
           "named": true
         },
         {
@@ -675,6 +723,22 @@
           "named": true
         },
         {
+          "type": "named_type",
+          "named": true
+        },
+        {
+          "type": "paren_type",
+          "named": true
+        },
+        {
+          "type": "rbracket",
+          "named": true
+        },
+        {
+          "type": "record_type",
+          "named": true
+        },
+        {
           "type": "rest_pattern",
           "named": true
         },
@@ -683,7 +747,15 @@
           "named": true
         },
         {
+          "type": "type_variable",
+          "named": true
+        },
+        {
           "type": "upper_id",
+          "named": true
+        },
+        {
+          "type": "variant_type",
           "named": true
         }
       ]

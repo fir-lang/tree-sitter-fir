@@ -10,6 +10,21 @@ function sep1(rule, separator) {
   return seq(rule, repeat(seq(separator, rule)));
 }
 
+// Constructor path: covers Con, Con[..], Type.Con, Type[..].Con, Type.Con[..], Type[..].Con[..]
+// Returns an array suitable for spreading into a seq().
+function conPathParts($) {
+  return [
+    optional($.module_prefix),
+    $.upper_id,
+    optional(seq($.lbracket, sep1($._type, $._comma), $.rbracket)),
+    optional(seq(
+      $._dot,
+      $.upper_id,
+      optional(seq($.lbracket, sep1($._type, $._comma), $.rbracket)),
+    )),
+  ];
+}
+
 module.exports = grammar({
   name: 'fir',
 
@@ -19,6 +34,7 @@ module.exports = grammar({
 
   conflicts: $ => [
     [$.constructor_expression, $.sequence_expression],
+    [$.constructor_expression],
   ],
 
   externals: $ => [
@@ -363,12 +379,7 @@ module.exports = grammar({
 
     variable_expression: $ => prec(0, seq(optional($.module_prefix), $.lower_id, optional($.type_arguments))),
 
-    constructor_expression: $ => prec(0, choice(
-      seq(optional($.module_prefix), $.upper_id),
-      seq(optional($.module_prefix), $.upper_id, $.lbracket, sep1($._type, $._comma), $.rbracket),
-      seq(optional($.module_prefix), $.upper_id, $._dot, $.upper_id),
-      seq(optional($.module_prefix), $.upper_id, $._dot, $.upper_id, $.lbracket, sep1($._type, $._comma), $.rbracket),
-    )),
+    constructor_expression: $ => prec(0, seq(...conPathParts($))),
 
     parenthesized_expression: $ => prec(0, seq($.lparen, $._expr, $.rparen)),
 
@@ -501,16 +512,11 @@ module.exports = grammar({
 
     variable_pattern: $ => $.lower_id,
 
-    bare_constructor_pattern: $ => prec(-1, choice(
-      seq(optional($.module_prefix), $.upper_id),
-      seq(optional($.module_prefix), $.upper_id, $._dot, $.upper_id),
-    )),
+    bare_constructor_pattern: $ => prec(-1, seq(...conPathParts($))),
 
     constructor_pattern: $ => choice(
-      seq(optional($.module_prefix), $.upper_id, $.lparen, $._field_pats, $.rparen),
-      seq(optional($.module_prefix), $.upper_id, $.lparen, $.rparen),
-      seq(optional($.module_prefix), $.upper_id, $._dot, $.upper_id, $.lparen, $._field_pats, $.rparen),
-      seq(optional($.module_prefix), $.upper_id, $._dot, $.upper_id, $.lparen, $.rparen),
+      seq(...conPathParts($), $.lparen, $._field_pats, $.rparen),
+      seq(...conPathParts($), $.lparen, $.rparen),
     ),
 
     record_pattern: $ => choice(
