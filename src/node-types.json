@@ -1032,6 +1032,53 @@
     }
   },
   {
+    "type": "extern_type_field",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "assoc_type_select",
+          "named": true
+        },
+        {
+          "type": "fn_type",
+          "named": true
+        },
+        {
+          "type": "lower_id",
+          "named": true
+        },
+        {
+          "type": "named_type",
+          "named": true
+        },
+        {
+          "type": "paren_type",
+          "named": true
+        },
+        {
+          "type": "record_type",
+          "named": true
+        },
+        {
+          "type": "string_expression",
+          "named": true
+        },
+        {
+          "type": "type_variable",
+          "named": true
+        },
+        {
+          "type": "variant_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "field",
     "named": true,
     "fields": {},
@@ -4086,11 +4133,19 @@
           "named": true
         },
         {
+          "type": "extern_type_field",
+          "named": true
+        },
+        {
           "type": "field",
           "named": true
         },
         {
           "type": "fn_type",
+          "named": true
+        },
+        {
+          "type": "kw_extern",
           "named": true
         },
         {
@@ -4131,6 +4186,10 @@
         },
         {
           "type": "rparen",
+          "named": true
+        },
+        {
+          "type": "string_expression",
           "named": true
         },
         {
@@ -4618,6 +4677,10 @@
   },
   {
     "type": "kw_else",
+    "named": true
+  },
+  {
+    "type": "kw_extern",
     "named": true
   },
   {

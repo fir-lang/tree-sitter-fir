@@ -116,6 +116,7 @@ module.exports = grammar({
     $.kw_do,
     $.kw_elif,
     $.kw_else,
+    $.kw_extern,
     $.kw_fn,
     $.kw_upper_fn,    // Fn
     $.kw_for,
@@ -160,6 +161,16 @@ module.exports = grammar({
       seq(optional($.attribute), $.kw_prim, $.kw_type, $.upper_id, $._newline),
       // prim type Name[TypeParams] NEWLINE
       seq(optional($.attribute), $.kw_prim, $.kw_type, $.upper_id, $.lbracket, $.type_params, $._newline),
+      // extern type Name = "c_type" [ ( field, ... ) ]
+      seq(
+        $.kw_extern, $.kw_type, $.upper_id, $._eq, $.string_expression,
+        optional(seq($.lparen, sep($.extern_type_field, $._comma), $.rparen)),
+        $._newline,
+      ),
+    ),
+
+    extern_type_field: $ => seq(
+      $.lower_id, $._colon, $._type, $._eq, $.string_expression,
     ),
 
     attribute: $ => seq(
